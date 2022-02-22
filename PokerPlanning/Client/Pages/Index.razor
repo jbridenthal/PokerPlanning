@@ -1,0 +1,189 @@
+﻿@page "/"
+@inject NavigationManager NavigationManager;
+@inject IJSRuntime JSRuntime;
+@implements IAsyncDisposable
+
+
+<PageTitle>Poker Planning</PageTitle>
+<MudGrid>
+    <MudItem xs="6">
+        @if (!IsConnected)
+        {
+            <div class="input-group">
+                <MudGrid>
+                    <MudItem xs="3" sm="3">
+                        <MudTextField @bind-Value="userName" Required="true" RequiredError="Name is required!" Label="Name" Variant="Variant.Text" Clearable="true"></MudTextField>
+                    </MudItem>
+                    <MudItem xs="9"></MudItem>
+                    <MudItem xs="3" sm="3">
+                        <MudSelect style="width:15rem" @bind-Value="role" Label="Role" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+                            @foreach (Role item in Enum.GetValues(typeof(Role)))
+                            {
+                            <MudSelectItem Value="@item">@item</MudSelectItem>
+                            }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="9"></MudItem>
+                <MudItem xs="12">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="Connect" Disabled="@(IsConnectDisabled)">Connect</MudButton>
+                </MudItem>
+            </MudGrid>
+        </div>
+        }
+        else
+        {
+            <h3>Voting</h3>
+            <MudGrid>
+                @foreach (var size in sizeValues)
+                {
+                    <MudItem xs="3">
+                        <MudButton Disabled="GetVoteDisable()" Variant="GetVoteColor(size.ToString())" Color="Color.Primary" Size="Size.Large" OnClick="() => HandleVoting(size.ToString())"> @size </MudButton>
+                    </MudItem>
+                }
+                <MudItem xs="3">
+                    <MudButton Disabled="GetVoteDisable()" Variant="GetVoteColor('?'.ToString())" Color="Color.Primary" Size="Size.Large" OnClick="() => HandleVoting('?'.ToString())"> ? </MudButton>
+                </MudItem>
+            </MudGrid>
+            <MudGrid>
+                <MudItem xs="3">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" OnClick="()=> HandleShowVotes()"> Show Votes </MudButton>
+                </MudItem>
+                <MudItem xs="3">
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" Size="Size.Large" OnClick="()=> HandleClearVotes()"> Clear Votes </MudButton>
+                </MudItem>
+            </MudGrid>
+        }
+    </MudItem>
+    <MudItem xs="6">
+        <UsersList Users=@Users ShowVotes="@showVotes"></UsersList>
+    </MudItem>
+    <MudItem xs="12">
+        @if (IsConnected && false)
+        {
+            <h3>Debug Area</h3>
+            <MudGrid>
+                <MudItem xs="3" sm="3">
+                    <textarea style="width: 100%; height: 100px;" @ref="TextAreaRef">
+                        @messages
+                                            </textarea>
+                </MudItem>
+                <MudItem xs="9"></MudItem>
+                <MudItem xs="3" sm="3">
+                    <div class="input-group">
+                        <MudTextField @bind-Value="message" Label="message" Variant="Variant.Text" @onkeyup="HandleInput" Clearable="true"></MudTextField>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="Send" Disabled="@(!IsConnected)">Send</MudButton>
+                    </div>
+                </MudItem>
+            </MudGrid>
+        }
+    </MudItem>
+</MudGrid>
+
+@code {
+    private HubConnection? hubConnection;
+    private string messages = string.Empty;
+    private string userName = string.Empty;
+    private string message = string.Empty;
+    private int[] sizeValues = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+    private Role role;
+    private Dictionary<string, User> Users = new Dictionary<string, User>();
+    private bool showVotes = false;
+    ElementReference TextAreaRef;
+
+    private async Task Connect()
+    {
+        hubConnection = new HubConnectionBuilder()
+        .WithUrl(NavigationManager.ToAbsoluteUri($"/chathub?username={userName}&role={role}"))
+        .Build();
+
+        hubConnection.On<string, string>("RecieveMessage", (user, message) =>
+        {
+            var msg = $"{(string.IsNullOrEmpty(user) ? "" : user + ": ")}{message}";
+            messages += msg + Environment.NewLine;
+            JSRuntime.InvokeVoidAsync("scrollToBottom", TextAreaRef);
+            StateHasChanged();
+        });
+
+        hubConnection.On<Dictionary<string, User>>("RecieveUsers", (users) =>
+        {
+            Users = users;
+            StateHasChanged();
+        });
+
+        await hubConnection.StartAsync();
+    }
+
+    private async Task Send()
+    {
+        if (hubConnection != null)
+        {
+            await hubConnection.SendAsync("SendMessage", userName, message);
+            message = string.Empty;
+        }
+    }
+
+    private async Task HandleInput(KeyboardEventArgs args)
+    {
+        if (args.Key.Equals("Enter"))
+        {
+            await Send();
+        }
+
+    }
+
+    private async Task HandleVoting(string vote)
+    {
+        if (hubConnection != null)
+        {
+            await hubConnection.SendAsync("SendVote", vote);
+        }
+    }
+
+    private async Task HandleShowVotes()
+    {
+        showVotes = true;
+    }
+
+    private async Task HandleClearVotes()
+    {
+        if (hubConnection != null)
+        {
+            await hubConnection.SendAsync("ClearVotes");
+            showVotes = false;
+        }
+    }
+
+    public Variant GetVoteColor(string vote)
+    {
+        var user = Users.Values.Where(x => x.Name.Equals(userName)).FirstOrDefault();
+        return user.Vote != null && user.Vote.Equals(vote) ? Variant.Filled : Variant.Outlined;
+    }
+
+    public bool GetVoteDisable()
+    {
+        var user = Users.Values.Where(x => x.Name.Equals(userName)).FirstOrDefault();
+        if (user.Role == Role.Observer)
+        {
+            return true;
+        }
+
+        if(showVotes)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool IsConnectDisabled => string.IsNullOrEmpty(userName) || string.IsNullOrWhiteSpace(userName);
+
+    public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
+
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection != null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
+}

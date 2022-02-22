@@ -1,0 +1,56 @@
+﻿
+<MudList Clickable="false" Dense="true">
+    <MudListSubheader>Users List</MudListSubheader>
+    <MudListSubheader>
+        <MudGrid>
+            <MudItem xs="3">User</MudItem>
+            <MudItem xs="3">Voted</MudItem>
+
+        </MudGrid>
+    </MudListSubheader>
+    @foreach (Role item in Enum.GetValues(typeof(Role)))
+    {
+        <MudListItem Icon="@Icons.Filled.PersonOutline" Text="@item.ToString()" InitiallyExpanded="true">
+            <NestedList>
+                @foreach (User user in Users.Values.Where(x => x.Role == item))
+                {
+                    <MudListItem>
+                        <MudGrid>
+                            <MudItem xs="3">@user.Name</MudItem>
+                            <MudItem xs="3">
+                                @if (@item != Role.Observer)
+                                {
+                                    @if (!ShowVotes)
+                                    {
+                                        @if (@user.Vote != null)
+                                        {
+                                            <MudIcon Icon="@Icons.Filled.Check" Color="@Color.Success" />
+                                        }
+                                        else
+                                        {
+                                            <MudIcon Icon="@Icons.Filled.Close" Color="@Color.Error" />
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @user.Vote
+                                        ;
+                                    }
+                                }
+                            </MudItem>
+                        </MudGrid>
+                    </MudListItem>
+                }
+            </NestedList>
+        </MudListItem>
+    }
+</MudList>
+
+
+@code {
+    [Parameter]
+    public Dictionary<string, User> Users { get; set; }
+
+    [Parameter]
+    public bool ShowVotes { get; set; }
+}
