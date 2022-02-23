@@ -10,9 +10,11 @@ namespace PokerPlanning.Server.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            string username = Context.GetHttpContext().Request.Query["username"];
-            string role = Context.GetHttpContext().Request.Query["role"];
-            Users.Add(Context.ConnectionId, new User { Name = username, Role = (Role)Enum.Parse(typeof(Role), role) });
+            var request = Context.GetHttpContext()?.Request;
+
+            string? username = request != null ? request.Query["username"] : string.Empty;
+            string? role  = request != null ? request.Query["role"] : Role.Observer.ToString();
+            Users.Add(Context.ConnectionId, new User { Name = username, Role = (Role)Enum.Parse(typeof(Role), role ?? Role.Observer.ToString()) });
 
             await SendMessage(string.Empty, $"{username}({role}) {Context.ConnectionId} Connected!");
             await SendUsers();
@@ -22,7 +24,7 @@ namespace PokerPlanning.Server.Hubs
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            string username = Users.FirstOrDefault(u => u.Key == Context.ConnectionId).Value.Name;
+            string username = Users.FirstOrDefault(u => u.Key == Context.ConnectionId).Value.Name ?? String.Empty;
             Users.Remove(Context.ConnectionId);
             await SendUsers();
             await SendMessage(string.Empty, $"{username} Disconnected!");
@@ -42,7 +44,7 @@ namespace PokerPlanning.Server.Hubs
         public async Task SendVote(string vote)
         {
             Users.Where(x => x.Key == Context.ConnectionId).FirstOrDefault().Value.Vote = vote;
-            await SendMessage(Users.FirstOrDefault(u => u.Key == Context.ConnectionId).Value.Name, $"voted a {vote}");
+            await SendMessage(Users.FirstOrDefault(u => u.Key == Context.ConnectionId).Value.Name ?? String.Empty, $"voted a {vote}");
             await SendUsers();
         }
 
@@ -53,7 +55,7 @@ namespace PokerPlanning.Server.Hubs
                 Users[key].Vote = null;
             }
             await SendUsers();
-            await SendMessage(Users.FirstOrDefault(u => u.Key == Context.ConnectionId).Value.Name, $"cleared votes");
+            await SendMessage(Users.FirstOrDefault(u => u.Key == Context.ConnectionId).Value.Name ?? String.Empty, $"cleared votes");
         }
     }
 }
