@@ -9,6 +9,5 @@ Use docker-compose.example.yml in DockerComposeServer folder to deploy to a serv
 ## TODO
 Add ability to create planning rooms  
 Add stats on votes  
-Break off SignalR into different hubs for users and voting  
 
 
