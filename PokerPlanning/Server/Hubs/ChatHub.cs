@@ -47,6 +47,10 @@ namespace PokerPlanning.Server.Hubs
             await SendMessage(Users.FirstOrDefault(u => u.Key == Context.ConnectionId).Value.Name ?? String.Empty, $"voted a {vote}");
             await SendUsers();
         }
+        public async Task ShowVotes()
+        {
+            await Clients.All.SendAsync("ShowVotes");
+        }
 
         public async Task ClearVotes()
         {

@@ -111,6 +111,13 @@
             StateHasChanged();
         });
 
+
+        hubConnection.On("ShowVotes", () =>
+        {
+            showVotes = true;
+            StateHasChanged();
+        });
+
         await hubConnection.StartAsync();
     }
 
@@ -149,7 +156,13 @@
         }
     }
 
-    private bool HandleShowVotes() => showVotes = true;
+    private async Task HandleShowVotes()
+    {
+        if(hubConnection != null)
+        {
+            await hubConnection.SendAsync("ShowVotes");
+        }
+    }
 
     public Variant GetVoteColor(string vote)
     {
