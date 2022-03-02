@@ -56,54 +56,45 @@
         }
     </MudItem>
     <MudItem xs="6">
-        <UsersList Users=@Users ShowVotes="@showVotes"></UsersList>
+        @if (ShowUsers())
+        {
+            <UsersList Users=@Users ShowVotes="@showVotes"></UsersList>
+
+        }
+        else
+        {
+            <RoomsList Rooms=@Rooms></RoomsList>
+        }
     </MudItem>
     <MudItem xs="12">
-        @if (IsConnected && false)
-        {
-            <h3>Debug Area</h3>
-            <MudGrid>
-                <MudItem xs="3" sm="3">
-                    <textarea style="width: 100%; height: 100px;" @ref="TextAreaRef">
-                        @messages
-                                                    </textarea>
-                </MudItem>
-                <MudItem xs="9"></MudItem>
-                <MudItem xs="3" sm="3">
-                    <div class="input-group">
-                        <MudTextField @bind-Value="message" Label="message" Variant="Variant.Text" @onkeyup="HandleInput" Clearable="true"></MudTextField>
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="Send" Disabled="@(!IsConnected)">Send</MudButton>
-                    </div>
-                </MudItem>
-            </MudGrid>
-        }
+
     </MudItem>
 </MudGrid>
 
 @code {
     private HubConnection? hubConnection;
-    private string messages = string.Empty;
     private string userName = string.Empty;
     private string message = string.Empty;
+    private string userId = string.Empty;
     private int[] sizeValues = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
     private Role role;
     private Dictionary<string, User> Users = new Dictionary<string, User>();
     private bool showVotes = false;
+    private static Dictionary<string,List<string>> Rooms = new Dictionary<string, List<string>>();
     ElementReference TextAreaRef;
 
     private async Task Connect()
     {
         hubConnection = new HubConnectionBuilder()
-        .WithUrl(NavigationManager.ToAbsoluteUri($"/chathub?username={userName}&role={role}"))
+        .WithUrl(NavigationManager.ToAbsoluteUri($"/pokerhub?username={userName}&role={role}"))
+        .WithAutomaticReconnect()
         .Build();
 
-        hubConnection.On<string, string>("RecieveMessage", (user, message) =>
-        {
-            var msg = $"{(string.IsNullOrEmpty(user) ? "" : user + ": ")}{message}";
-            messages += msg + Environment.NewLine;
-            JSRuntime.InvokeVoidAsync("scrollToBottom", TextAreaRef);
-            StateHasChanged();
-        });
+        hubConnection.On<string>("RecieveUserId", (connectionId) =>
+       {
+           userId = connectionId;
+           StateHasChanged();
+       });
 
         hubConnection.On<Dictionary<string, User>>("RecieveUsers", (users) =>
         {
@@ -118,26 +109,25 @@
             StateHasChanged();
         });
 
-        await hubConnection.StartAsync();
-    }
 
-    private async Task Send()
-    {
-        if (hubConnection != null)
+        hubConnection.On<Dictionary<string,List<string>>>("RecieveRooms", (rooms) =>
+             {
+                 Rooms = rooms;
+                 StateHasChanged();
+             });
+
+
+        try
         {
-            await hubConnection.SendAsync("SendMessage", userName, message);
-            message = string.Empty;
+            await hubConnection.StartAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.Write(ex.Message);
         }
     }
 
-    private async Task HandleInput(KeyboardEventArgs args)
-    {
-        if (args.Key.Equals("Enter"))
-        {
-            await Send();
-        }
 
-    }
 
     private async Task HandleVoting(string vote)
     {
@@ -158,7 +148,7 @@
 
     private async Task HandleShowVotes()
     {
-        if(hubConnection != null)
+        if (hubConnection != null)
         {
             await hubConnection.SendAsync("ShowVotes");
         }
@@ -190,6 +180,14 @@
     public bool IsConnectDisabled => string.IsNullOrEmpty(userName) || string.IsNullOrWhiteSpace(userName);
 
     public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
+
+    public bool ShowUsers()
+    {
+        if(Users.Keys.Count() >= 0 && Users.ContainsKey(userId) && Users[userId].Room != "Lobby") {
+            return true;
+        }
+        return false;
+    }
 
     public async ValueTask DisposeAsync()
     {

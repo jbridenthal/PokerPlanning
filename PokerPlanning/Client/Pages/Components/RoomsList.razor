@@ -1,0 +1,33 @@
+﻿@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+<h3>Rooms</h3>
+<MudGrid>
+    <MudItem xs="12">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => CreateRoom())">Create Room</MudButton>
+    </MudItem>
+    @foreach (var room in Rooms.Keys)
+    {
+        <MudItem xs="12">
+            <MudBadge Content="@Rooms[room].Count()" Color="Color.Info" Overlap="true" Bordered="true">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary">Join @room</MudButton>
+            </MudBadge>
+        </MudItem>
+    }
+</MudGrid>
+@code {
+    [Parameter]
+    public Dictionary<string, List<string>> Rooms { get; set; } = new Dictionary<string, List<string>>();
+
+    async Task CreateRoom()
+    {
+        
+
+        var dialog = DialogService.Show<CreateRoomDialog>();
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            Snackbar.Add($"Returned from dialog {result.Data}");
+        }
+    }
+}

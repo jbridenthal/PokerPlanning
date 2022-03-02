@@ -8,5 +8,6 @@ namespace PokerPlanning.Shared
         public string? Name { get; set; }
         public Role Role { get; set; }
         public string? Vote { get; set; }
+        public string? Room { get; set; }
     }
 }
