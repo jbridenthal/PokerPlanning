@@ -1,5 +1,4 @@
-﻿@inject ISnackbar Snackbar
-@inject IDialogService DialogService
+﻿@inject IDialogService DialogService
 <h3>Rooms</h3>
 <MudGrid>
     <MudItem xs="12">
@@ -9,7 +8,7 @@
     {
         <MudItem xs="12">
             <MudBadge Content="@Rooms[room].Count()" Color="Color.Info" Overlap="true" Bordered="true">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary">Join @room</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => OnJoinRoomClick.InvokeAsync(room))">Join @room</MudButton>
             </MudBadge>
         </MudItem>
     }
@@ -18,16 +17,17 @@
     [Parameter]
     public Dictionary<string, List<string>> Rooms { get; set; } = new Dictionary<string, List<string>>();
 
+    [Parameter] 
+    public EventCallback<string> OnJoinRoomClick { get; set; }
+
     async Task CreateRoom()
     {
-        
-
         var dialog = DialogService.Show<CreateRoomDialog>();
         var result = await dialog.Result;
 
-        if (!result.Cancelled)
+        if (!result.Cancelled && !string.IsNullOrWhiteSpace(result.Data.ToString()))
         {
-            Snackbar.Add($"Returned from dialog {result.Data}");
+           await OnJoinRoomClick.InvokeAsync(result.Data.ToString());
         }
     }
 }

@@ -63,7 +63,7 @@
         }
         else
         {
-            <RoomsList Rooms=@Rooms></RoomsList>
+            <RoomsList Rooms=@Rooms OnJoinRoomClick="@HandleJoinRoomClick"></RoomsList>
         }
     </MudItem>
     <MudItem xs="12">
@@ -81,7 +81,6 @@
     private Dictionary<string, User> Users = new Dictionary<string, User>();
     private bool showVotes = false;
     private static Dictionary<string,List<string>> Rooms = new Dictionary<string, List<string>>();
-    ElementReference TextAreaRef;
 
     private async Task Connect()
     {
@@ -111,10 +110,10 @@
 
 
         hubConnection.On<Dictionary<string,List<string>>>("RecieveRooms", (rooms) =>
-             {
-                 Rooms = rooms;
-                 StateHasChanged();
-             });
+              {
+                  Rooms = rooms;
+                  StateHasChanged();
+              });
 
 
         try
@@ -151,6 +150,13 @@
         if (hubConnection != null)
         {
             await hubConnection.SendAsync("ShowVotes");
+        }
+    }
+
+    private async Task HandleJoinRoomClick(string room)
+    {   if (hubConnection != null)
+        {
+         await hubConnection.SendAsync("JoinRoom", room);
         }
     }
 
