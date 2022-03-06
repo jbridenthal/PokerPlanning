@@ -6,34 +6,23 @@
 
 
 <PageTitle>Poker Planning</PageTitle>
-<MudGrid>
-    <MudItem xs="6">
-        @if (!IsConnected)
-        {
-            <div class="input-group">
-                <MudGrid>
-                    <MudItem xs="3" sm="3">
-                        <MudTextField @bind-Value="userName" Required="true" RequiredError="Name is required!" Label="Name" Variant="Variant.Text" Clearable="true"></MudTextField>
-                    </MudItem>
-                    <MudItem xs="9"></MudItem>
-                    <MudItem xs="3" sm="3">
-                        <MudSelect style="width:15rem" @bind-Value="role" Label="Role" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
-                            @foreach (Role item in Enum.GetValues(typeof(Role)))
-                            {
-                            <MudSelectItem Value="@item">@item</MudSelectItem>
-                            }
-                    </MudSelect>
-                </MudItem>
-                <MudItem xs="9"></MudItem>
-                <MudItem xs="12">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="Connect" Disabled="@(IsConnectDisabled)">Connect</MudButton>
-                </MudItem>
-            </MudGrid>
-        </div>
-        }
-        else
-        {
-            <h3>Voting</h3>
+
+@if (!IsConnected)
+{
+    <MudGrid>
+        <MudItem xl=4></MudItem>
+        <MudItem xl="4">
+            <Username @bind-UserName="@userName" @bind-SelectedRole="@role" OnConnectCallBack="Connect" />
+        </MudItem>
+        <MudItem xl=4></MudItem>
+    </MudGrid>
+}
+else
+{
+    <MudGrid>
+        <MudItem xl="2"> <RoomsList Rooms=@Rooms OnJoinRoomClick="@HandleJoinRoomClick" CurrentRoom="@GetConnectedRoom()"></RoomsList></MudItem>
+        <MudItem xl="4">
+           <MudText Typo="Typo.h4">Voting</MudText>
             <MudGrid>
                 @foreach (var size in sizeValues)
                 {
@@ -53,34 +42,21 @@
                     <MudButton Variant="Variant.Filled" Color="Color.Secondary" Size="Size.Large" OnClick="()=> HandleClearVotes()"> Clear Votes </MudButton>
                 </MudItem>
             </MudGrid>
-        }
-    </MudItem>
-    <MudItem xs="6">
-        @if (ShowUsers())
-        {
-            <UsersList Users=@Users ShowVotes="@showVotes"></UsersList>
-
-        }
-        else
-        {
-            <RoomsList Rooms=@Rooms OnJoinRoomClick="@HandleJoinRoomClick"></RoomsList>
-        }
-    </MudItem>
-    <MudItem xs="12">
-
-    </MudItem>
-</MudGrid>
+        </MudItem>
+        <MudItem xl="4"><UsersList Users=@Users ShowVotes="@showVotes" Room="@GetConnectedRoom()"></UsersList></MudItem>
+    </MudGrid>
+}
 
 @code {
     private HubConnection? hubConnection;
-    private string userName = string.Empty;
+    private string userName { get; set; } = string.Empty;
     private string message = string.Empty;
     private string userId = string.Empty;
     private int[] sizeValues = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-    private Role role;
+    private Role role = Role.Observer;
     private Dictionary<string, User> Users = new Dictionary<string, User>();
     private bool showVotes = false;
-    private static Dictionary<string,List<string>> Rooms = new Dictionary<string, List<string>>();
+    private static Dictionary<string, List<string>> Rooms = new Dictionary<string, List<string>>();
 
     private async Task Connect()
     {
@@ -109,11 +85,11 @@
         });
 
 
-        hubConnection.On<Dictionary<string,List<string>>>("RecieveRooms", (rooms) =>
-              {
-                  Rooms = rooms;
-                  StateHasChanged();
-              });
+        hubConnection.On<Dictionary<string, List<string>>>("RecieveRooms", (rooms) =>
+        {
+            Rooms = rooms;
+            StateHasChanged();
+        });
 
 
         try
@@ -133,6 +109,7 @@
         if (hubConnection != null)
         {
             await hubConnection.SendAsync("SendVote", vote);
+            StateHasChanged();
         }
     }
 
@@ -142,6 +119,7 @@
         {
             await hubConnection.SendAsync("ClearVotes");
             showVotes = false;
+            StateHasChanged();
         }
     }
 
@@ -150,13 +128,16 @@
         if (hubConnection != null)
         {
             await hubConnection.SendAsync("ShowVotes");
+            StateHasChanged();
         }
     }
 
     private async Task HandleJoinRoomClick(string room)
-    {   if (hubConnection != null)
+    {
+        if (hubConnection != null)
         {
-         await hubConnection.SendAsync("JoinRoom", room);
+            await hubConnection.SendAsync("JoinRoom", room);
+            StateHasChanged();
         }
     }
 
@@ -187,13 +168,20 @@
 
     public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
 
+    public string GetConnectedRoom()
+    {
+        return Users.ContainsKey(userId) && Users[userId].Room != null ? Users[userId].Room : "Lobby";
+    }
+
     public bool ShowUsers()
     {
-        if(Users.Keys.Count() >= 0 && Users.ContainsKey(userId) && Users[userId].Room != "Lobby") {
+        if (Users.Keys.Count() >= 0 && Users.ContainsKey(userId) && Users[userId].Room != "Lobby")
+        {
             return true;
         }
         return false;
     }
+
 
     public async ValueTask DisposeAsync()
     {

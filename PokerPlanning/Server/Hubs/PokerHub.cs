@@ -21,10 +21,10 @@ namespace PokerPlanning.Server.Hubs
             await JoinRoom(room ?? ROOM_LOBBY);
             await SendUsers();
             await SendRooms();
+            await SendUserId();
             await base.OnConnectedAsync();
-     
-
         }
+
         public Task ThrowException()
         {
             throw new HubException("This error will be sent to the client!");
@@ -58,16 +58,29 @@ namespace PokerPlanning.Server.Hubs
 
         public async Task ShowVotes()
         {
-            await Clients.All.SendAsync("ShowVotes");
+
+            if (Users.ContainsKey(Context.ConnectionId) && Users[Context.ConnectionId].Room != null)
+            {
+                await Clients.Group(Users[Context.ConnectionId].Room ?? "").SendAsync("ShowVotes");
+            }
         }
 
         public async Task ClearVotes()
         {
-            foreach(var key in Users.Keys)
+            var room =  Users[Context.ConnectionId].Room;
+            foreach (var key in Users.Keys)
             {
-                Users[key].Vote = null;
+                if (Users[key].Room == room) { 
+                     Users[key].Vote = null;
+                }
             }
             await SendUsers();
+        }
+
+
+        public async Task SendUserId()
+        {
+            await Clients.Caller.SendAsync("RecieveUserId", Context.ConnectionId);
         }
 
         public async Task JoinRoom(string room) 
@@ -88,6 +101,7 @@ namespace PokerPlanning.Server.Hubs
             }
             await Groups.AddToGroupAsync(Context.ConnectionId, room);
             await SendRooms();
+            await SendUsers();
         }
 
         public async Task LeaveRoom(string room)
@@ -103,6 +117,7 @@ namespace PokerPlanning.Server.Hubs
             }
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, room);
             await SendRooms();
+            await SendUsers();
         }
     }
 }

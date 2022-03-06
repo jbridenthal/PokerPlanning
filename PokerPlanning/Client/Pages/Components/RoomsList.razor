@@ -1,15 +1,17 @@
 ﻿@inject IDialogService DialogService
-<h3>Rooms</h3>
+<MudText Typo="Typo.h4">Rooms</MudText>
 <MudGrid>
     <MudItem xs="12">
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => CreateRoom())">Create Room</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" EndIcon="@Icons.Filled.AddCircle" FullWidth="true" OnClick="@(() => CreateRoom())">Create Room</MudButton>
     </MudItem>
     @foreach (var room in Rooms.Keys)
     {
         <MudItem xs="12">
-            <MudBadge Content="@Rooms[room].Count()" Color="Color.Info" Overlap="true" Bordered="true">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => OnJoinRoomClick.InvokeAsync(room))">Join @room</MudButton>
-            </MudBadge>
+            @*MudBadge has bug stopping button from being full width*@
+          @*<MudBadge Content="@Rooms[room].Count()" Color="Color.Info" FullWidth="true" Overlap="true" Bordered="true">*@
+                <MudButton Variant="@GetConnectedRoomVariant(room)" Color="Color.Primary"  FullWidth="true" OnClick="@(() => OnJoinRoomClick.InvokeAsync(room))">@GetRoomButtonTitle(room)
+                 </MudButton>
+           @* </MudBadge>*@
         </MudItem>
     }
 </MudGrid>
@@ -20,6 +22,9 @@
     [Parameter] 
     public EventCallback<string> OnJoinRoomClick { get; set; }
 
+    [Parameter]
+    public string CurrentRoom { get; set; } = string.Empty;
+
     async Task CreateRoom()
     {
         var dialog = DialogService.Show<CreateRoomDialog>();
@@ -27,7 +32,17 @@
 
         if (!result.Cancelled && !string.IsNullOrWhiteSpace(result.Data.ToString()))
         {
-           await OnJoinRoomClick.InvokeAsync(result.Data.ToString());
+            await OnJoinRoomClick.InvokeAsync(result.Data.ToString());
         }
+    }
+
+    public Variant GetConnectedRoomVariant(string room)
+    {
+        return room == CurrentRoom ? Variant.Filled : Variant.Outlined;
+    }
+
+    public string GetRoomButtonTitle(string room)
+    {
+        return room == CurrentRoom ? $"Currently in {room}" : $"Join {room} : Users {Rooms[room].Count()}";
     }
 }
