@@ -6,34 +6,23 @@
 
 
 <PageTitle>Poker Planning</PageTitle>
-<MudGrid>
-    <MudItem xs="6">
-        @if (!IsConnected)
-        {
-            <div class="input-group">
-                <MudGrid>
-                    <MudItem xs="3" sm="3">
-                        <MudTextField @bind-Value="userName" Required="true" RequiredError="Name is required!" Label="Name" Variant="Variant.Text" Clearable="true"></MudTextField>
-                    </MudItem>
-                    <MudItem xs="9"></MudItem>
-                    <MudItem xs="3" sm="3">
-                        <MudSelect style="width:15rem" @bind-Value="role" Label="Role" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
-                            @foreach (Role item in Enum.GetValues(typeof(Role)))
-                            {
-                            <MudSelectItem Value="@item">@item</MudSelectItem>
-                            }
-                    </MudSelect>
-                </MudItem>
-                <MudItem xs="9"></MudItem>
-                <MudItem xs="12">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="Connect" Disabled="@(IsConnectDisabled)">Connect</MudButton>
-                </MudItem>
-            </MudGrid>
-        </div>
-        }
-        else
-        {
-            <h3>Voting</h3>
+
+@if (!IsConnected)
+{
+    <MudGrid>
+        <MudItem xl=4></MudItem>
+        <MudItem xl="4">
+            <Username @bind-UserName="@userName" @bind-SelectedRole="@role" OnConnectCallBack="Connect" />
+        </MudItem>
+        <MudItem xl=4></MudItem>
+    </MudGrid>
+}
+else
+{
+    <MudGrid>
+        <MudItem xl="2"> <RoomsList Rooms=@Rooms OnJoinRoomClick="@HandleJoinRoomClick" CurrentRoom="@GetConnectedRoom()"></RoomsList></MudItem>
+        <MudItem xl="4">
+           <MudText Typo="Typo.h4">Voting</MudText>
             <MudGrid>
                 @foreach (var size in sizeValues)
                 {
@@ -53,57 +42,34 @@
                     <MudButton Variant="Variant.Filled" Color="Color.Secondary" Size="Size.Large" OnClick="()=> HandleClearVotes()"> Clear Votes </MudButton>
                 </MudItem>
             </MudGrid>
-        }
-    </MudItem>
-    <MudItem xs="6">
-        <UsersList Users=@Users ShowVotes="@showVotes"></UsersList>
-    </MudItem>
-    <MudItem xs="12">
-        @if (IsConnected && false)
-        {
-            <h3>Debug Area</h3>
-            <MudGrid>
-                <MudItem xs="3" sm="3">
-                    <textarea style="width: 100%; height: 100px;" @ref="TextAreaRef">
-                        @messages
-                                                    </textarea>
-                </MudItem>
-                <MudItem xs="9"></MudItem>
-                <MudItem xs="3" sm="3">
-                    <div class="input-group">
-                        <MudTextField @bind-Value="message" Label="message" Variant="Variant.Text" @onkeyup="HandleInput" Clearable="true"></MudTextField>
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="Send" Disabled="@(!IsConnected)">Send</MudButton>
-                    </div>
-                </MudItem>
-            </MudGrid>
-        }
-    </MudItem>
-</MudGrid>
+        </MudItem>
+        <MudItem xl="4"><UsersList Users=@Users ShowVotes="@showVotes" Room="@GetConnectedRoom()"></UsersList></MudItem>
+    </MudGrid>
+}
 
 @code {
     private HubConnection? hubConnection;
-    private string messages = string.Empty;
-    private string userName = string.Empty;
+    private string userName { get; set; } = string.Empty;
     private string message = string.Empty;
+    private string userId = string.Empty;
     private int[] sizeValues = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-    private Role role;
+    private Role role = Role.Observer;
     private Dictionary<string, User> Users = new Dictionary<string, User>();
     private bool showVotes = false;
-    ElementReference TextAreaRef;
+    private static Dictionary<string, List<string>> Rooms = new Dictionary<string, List<string>>();
 
     private async Task Connect()
     {
         hubConnection = new HubConnectionBuilder()
-        .WithUrl(NavigationManager.ToAbsoluteUri($"/chathub?username={userName}&role={role}"))
+        .WithUrl(NavigationManager.ToAbsoluteUri($"/pokerhub?username={userName}&role={role}"))
+        .WithAutomaticReconnect()
         .Build();
 
-        hubConnection.On<string, string>("RecieveMessage", (user, message) =>
-        {
-            var msg = $"{(string.IsNullOrEmpty(user) ? "" : user + ": ")}{message}";
-            messages += msg + Environment.NewLine;
-            JSRuntime.InvokeVoidAsync("scrollToBottom", TextAreaRef);
-            StateHasChanged();
-        });
+        hubConnection.On<string>("RecieveUserId", (connectionId) =>
+       {
+           userId = connectionId;
+           StateHasChanged();
+       });
 
         hubConnection.On<Dictionary<string, User>>("RecieveUsers", (users) =>
         {
@@ -118,32 +84,32 @@
             StateHasChanged();
         });
 
-        await hubConnection.StartAsync();
-    }
 
-    private async Task Send()
-    {
-        if (hubConnection != null)
+        hubConnection.On<Dictionary<string, List<string>>>("RecieveRooms", (rooms) =>
         {
-            await hubConnection.SendAsync("SendMessage", userName, message);
-            message = string.Empty;
+            Rooms = rooms;
+            StateHasChanged();
+        });
+
+
+        try
+        {
+            await hubConnection.StartAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.Write(ex.Message);
         }
     }
 
-    private async Task HandleInput(KeyboardEventArgs args)
-    {
-        if (args.Key.Equals("Enter"))
-        {
-            await Send();
-        }
 
-    }
 
     private async Task HandleVoting(string vote)
     {
         if (hubConnection != null)
         {
             await hubConnection.SendAsync("SendVote", vote);
+            StateHasChanged();
         }
     }
 
@@ -153,14 +119,25 @@
         {
             await hubConnection.SendAsync("ClearVotes");
             showVotes = false;
+            StateHasChanged();
         }
     }
 
     private async Task HandleShowVotes()
     {
-        if(hubConnection != null)
+        if (hubConnection != null)
         {
             await hubConnection.SendAsync("ShowVotes");
+            StateHasChanged();
+        }
+    }
+
+    private async Task HandleJoinRoomClick(string room)
+    {
+        if (hubConnection != null)
+        {
+            await hubConnection.SendAsync("JoinRoom", room);
+            StateHasChanged();
         }
     }
 
@@ -190,6 +167,21 @@
     public bool IsConnectDisabled => string.IsNullOrEmpty(userName) || string.IsNullOrWhiteSpace(userName);
 
     public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
+
+    public string GetConnectedRoom()
+    {
+        return Users.ContainsKey(userId) && Users[userId].Room != null ? Users[userId].Room : "Lobby";
+    }
+
+    public bool ShowUsers()
+    {
+        if (Users.Keys.Count() >= 0 && Users.ContainsKey(userId) && Users[userId].Room != "Lobby")
+        {
+            return true;
+        }
+        return false;
+    }
+
 
     public async ValueTask DisposeAsync()
     {

@@ -6,7 +6,8 @@
         {
             Dev,
             QA,
-            Observer
+            Observer, 
+            Moderator
         }
     }
 }

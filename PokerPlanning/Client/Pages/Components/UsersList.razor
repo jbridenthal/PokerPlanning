@@ -1,6 +1,6 @@
 ﻿
 <MudList Clickable="false" Dense="true">
-    <MudListSubheader>Users List</MudListSubheader>
+    <MudListSubheader><MudText Typo="Typo.h4">Users List for @Room</MudText></MudListSubheader>
     <MudListSubheader>
         <MudGrid>
             <MudItem xs="3">User</MudItem>
@@ -12,7 +12,7 @@
     {
         <MudListItem Icon="@Icons.Filled.PersonOutline" Text="@item.ToString()" InitiallyExpanded="true">
             <NestedList>
-                @foreach (User user in Users.Values.Where(x => x.Role == item))
+                @foreach (User user in Users.Values.Where(x => x.Role == item).Where(u => u.Room == Room))
                 {
                     <MudListItem>
                         <MudGrid>
@@ -54,5 +54,8 @@
 
     [Parameter]
     public bool ShowVotes { get; set; }  
-    
+
+    [Parameter]
+    public string Room { get; set; }
+
 }
