@@ -35,8 +35,10 @@ jobs:
       - name: downcase REPO
         run:  |
             echo "IMAGE_NAME=${REPO,,}" >>${GITHUB_ENV}
+            
       - name: use REPO
-        run: echo "The value of REPO is: ${IMAGE_NAME}"
+        run: echo "The value of REPO is:${IMAGE_NAME}"
+        
       - name: Checkout repository
         uses: actions/checkout@v2
 
