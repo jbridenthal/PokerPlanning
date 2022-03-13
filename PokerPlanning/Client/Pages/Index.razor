@@ -36,13 +36,13 @@ else
             </MudGrid>
             <MudGrid>          
                 <MudItem xs="9">
-                    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" FullWidth="true" EndIcon="@Icons.Filled.Person"  OnClick="()=> showVotes = true"> Show votes only me </MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" FullWidth="true" EndIcon="@Icons.Filled.Person"  OnClick="()=> showVotes = true"> Show votes for only me </MudButton>
                 </MudItem>
                 <MudItem xs="9">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"  EndIcon="@Icons.Filled.People" OnClick="()=> HandleShowVotes()" Disabled="@ModeratorOnly()"> Show Votes for everyone</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"  EndIcon="@Icons.Filled.People" OnClick="()=> HandleShowVotes()" Disabled="@ModeratorOnly()"> Show votes for everyone</MudButton>
                 </MudItem>
                 <MudItem xs="9">
-                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true"  OnClick="()=> HandleClearVotes()" Disabled="@ModeratorOnly()"> Clear Votes </MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true"  OnClick="()=> HandleClearVotes()" Disabled="@ModeratorOnly()"> Clear votes for everyone</MudButton>
                 </MudItem>
             </MudGrid>
             @if(ModeratorOnly())
