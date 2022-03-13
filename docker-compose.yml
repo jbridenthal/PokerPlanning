@@ -1,8 +1,0 @@
-version: '3.4'
-
-services:
-    pokerplanning.server:
-        image: ${DOCKER_REGISTRY-}pokerplanningserver
-        build:
-            context: .
-            dockerfile: PokerPlanning/Server/Dockerfile
