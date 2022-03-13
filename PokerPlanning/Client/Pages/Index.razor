@@ -22,7 +22,7 @@ else
     <MudGrid>
         <MudItem xl="2"> <RoomsList Rooms=@Rooms OnJoinRoomClick="@HandleJoinRoomClick" CurrentRoom="@GetConnectedRoom()"></RoomsList></MudItem>
         <MudItem xl="4">
-           <MudText Typo="Typo.h4">Voting</MudText>
+            <MudText Typo="Typo.h4">Voting</MudText>
             <MudGrid>
                 @foreach (var size in sizeValues)
                 {
@@ -34,16 +34,25 @@ else
                     <MudButton Disabled="GetVoteDisable()" Variant="GetVoteColor('?'.ToString())" Color="Color.Primary" Size="Size.Large" OnClick="() => HandleVoting('?'.ToString())"> ? </MudButton>
                 </MudItem>
             </MudGrid>
-            <MudGrid>
-                <MudItem xs="3">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" OnClick="()=> HandleShowVotes()"> Show Votes </MudButton>
+            <MudGrid>          
+                <MudItem xs="9">
+                    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" FullWidth="true" EndIcon="@Icons.Filled.Person"  OnClick="()=> showVotes = true"> Show votes only me </MudButton>
                 </MudItem>
-                <MudItem xs="3">
-                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" Size="Size.Large" OnClick="()=> HandleClearVotes()"> Clear Votes </MudButton>
+                <MudItem xs="9">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"  EndIcon="@Icons.Filled.People" OnClick="()=> HandleShowVotes()" Disabled="@ModeratorOnly()"> Show Votes for everyone</MudButton>
+                </MudItem>
+                <MudItem xs="9">
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true"  OnClick="()=> HandleClearVotes()" Disabled="@ModeratorOnly()"> Clear Votes </MudButton>
                 </MudItem>
             </MudGrid>
+            @if(ModeratorOnly())
+            {
+                <MudText Color="Color.Error">Only moderators can show or clear votes for everyone at this time</MudText>
+            }
         </MudItem>
-        <MudItem xl="4"><UsersList Users=@Users ShowVotes="@showVotes" Room="@GetConnectedRoom()"></UsersList></MudItem>
+        <MudItem xl="4">
+            <UsersList Users=@Users ShowVotes="@showVotes" Room="@GetConnectedRoom()"></UsersList>
+            </MudItem>
     </MudGrid>
 }
 
@@ -90,7 +99,12 @@ else
             Rooms = rooms;
             StateHasChanged();
         });
-
+        
+        hubConnection.On("ClearVotes", () =>
+        {
+            showVotes = false;
+            StateHasChanged();
+        });
 
         try
         {
@@ -150,7 +164,7 @@ else
     public bool GetVoteDisable()
     {
         var user = Users.Values.Where(x => x.Name != null && x.Name.Equals(userName)).FirstOrDefault();
-        if (user != null && user.Role == Role.Observer)
+        if (user != null && (user.Role == Role.Observer || user.Role == Role.Moderator))
         {
             return true;
         }
@@ -170,7 +184,11 @@ else
 
     public string GetConnectedRoom()
     {
-        return Users.ContainsKey(userId) && Users[userId].Room != null ? Users[userId].Room : "Lobby";
+        if (Users != null && Users.ContainsKey(userId))
+        {
+            return Users[userId].Room ?? "Lobby";
+        }
+        return "Lobby";
     }
 
     public bool ShowUsers()
@@ -178,6 +196,17 @@ else
         if (Users.Keys.Count() >= 0 && Users.ContainsKey(userId) && Users[userId].Room != "Lobby")
         {
             return true;
+        }
+        return false;
+    }
+
+    public bool ModeratorOnly()
+    {
+        if(Users.Values.Any(x=>x.Role == Role.Moderator)) {
+            if (role != Role.Moderator)
+            {
+                return true;
+            }
         }
         return false;
     }

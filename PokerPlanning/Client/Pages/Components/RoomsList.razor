@@ -1,5 +1,6 @@
 ﻿@inject IDialogService DialogService
 <MudText Typo="Typo.h4">Rooms</MudText>
+
 <MudGrid>
     <MudItem xs="12">
         <MudButton Variant="Variant.Outlined" Color="Color.Secondary" EndIcon="@Icons.Filled.AddCircle" FullWidth="true" OnClick="@(() => CreateRoom())">Create Room</MudButton>
@@ -8,7 +9,7 @@
     {
         <MudItem xs="12">
             @*MudBadge has bug stopping button from being full width*@
-          @*<MudBadge Content="@Rooms[room].Count()" Color="Color.Info" FullWidth="true" Overlap="true" Bordered="true">*@
+            @*<MudBadge Style="display:inherit" Content="@Rooms[room].Count()" Color="Color.Info" FullWidth="true" Overlap="true" Bordered="true">*@
                 <MudButton Variant="@GetConnectedRoomVariant(room)" Color="Color.Primary"  FullWidth="true" OnClick="@(() => OnJoinRoomClick.InvokeAsync(room))">@GetRoomButtonTitle(room)
                  </MudButton>
            @* </MudBadge>*@

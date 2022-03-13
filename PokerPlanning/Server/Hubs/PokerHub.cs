@@ -74,6 +74,7 @@ namespace PokerPlanning.Server.Hubs
                      Users[key].Vote = null;
                 }
             }
+            await Clients.Group(room).SendAsync("ClearVotes");
             await SendUsers();
         }
 
