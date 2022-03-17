@@ -99,7 +99,7 @@ else
             Rooms = rooms;
             StateHasChanged();
         });
-        
+
         hubConnection.On("ClearVotes", () =>
         {
             showVotes = false;
@@ -180,6 +180,10 @@ else
     public bool PersonalShowDisabled() {
         if (Users != null && Users.ContainsKey(userId))
         {
+            if(Users[userId].Role == Role.Observer ||Users[userId].Role == Role.Moderator)
+            {
+                return false;
+            }
             return string.IsNullOrWhiteSpace(Users[userId].Vote);
         }
         return true;
