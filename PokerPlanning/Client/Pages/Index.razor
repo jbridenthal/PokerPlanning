@@ -37,7 +37,7 @@ else
             </MudGrid>
             <MudGrid>
                 <MudItem xs="9">
-                    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" FullWidth="true" EndIcon="@Icons.Filled.Person" OnClick="()=> showVotes = true"> Show votes for only me </MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" FullWidth="true" EndIcon="@Icons.Filled.Person"  OnClick="()=> showVotes = true" Disabled="@PersonalShowDisabled()"> Show votes for only me </MudButton>
                 </MudItem>
                 <MudItem xs="9">
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" EndIcon="@Icons.Filled.People" OnClick="()=> HandleShowVotes()" Disabled="@ModeratorOnly()"> Show votes for everyone</MudButton>
@@ -199,7 +199,18 @@ else
         return false;
     }
 
-
+    public bool PersonalShowDisabled() {
+        if (Users != null && Users.ContainsKey(userId))
+        {
+            if(Users[userId].Role == Role.Observer ||Users[userId].Role == Role.Moderator)
+            {
+                return false;
+            }
+            return string.IsNullOrWhiteSpace(Users[userId].Vote);
+        }
+        return true;
+    }
+    
     public bool IsConnectDisabled => string.IsNullOrEmpty(userName) || string.IsNullOrWhiteSpace(userName);
 
     public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
