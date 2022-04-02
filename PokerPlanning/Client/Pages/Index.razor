@@ -3,6 +3,7 @@
 @inject IJSRuntime JSRuntime;
 @inject ISnackbar Snackbar
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject AppStateService _appStateService
 @implements IAsyncDisposable
 
 
@@ -58,6 +59,9 @@ else
 }
 
 @code {
+    [CascadingParameter]
+    public MainLayout Layout { get; set; }
+
     const string LOCAL_STORAGE_NAME = "PokerPlanning.UserInfo";
     private HubConnection? hubConnection;
     private string userName { get; set; } = string.Empty;
@@ -73,10 +77,15 @@ else
     protected override async Task OnInitializedAsync()
     {
         currentUser = await localStorage.GetItemAsync<User>(LOCAL_STORAGE_NAME);
+        Layout.CurrentUser = currentUser;
         if (!string.IsNullOrWhiteSpace(currentUser.Name))
         {
             userName = currentUser.Name;
             role = currentUser.Role;
+            _appStateService.SetUser(currentUser);
+            
+            StateHasChanged();
+            _appStateService.OnChange += StateHasChanged;
             await Connect();
         }
     }
