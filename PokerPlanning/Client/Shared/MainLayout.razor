@@ -11,25 +11,11 @@
             <MudText Typo="Typo.h5" Class="ml-3">Planning Poker</MudText>
             <MudSpacer />
              <MudChip Icon="@Icons.Material.Filled.Settings" Color="Color.Primary"  OnClick="@((e) => UserDrawerToggle())">@_hubService.CurrentUser?.Name</MudChip>
-            @*<MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.End" OnClick="@((e) => UserDrawerToggle())" />*@
-            @*            <MudMenu FullWidth="true">
-                <ActivatorContent>
-                <MudChip Icon="@Icons.Material.Filled.Settings" Color="Color.Primary">@_hubService.CurrentUser?.Name</MudChip>
-                </ActivatorContent>
-                <ChildContent>
-                <MudMenuItem>Change Name</MudMenuItem>
-                <MudMenuItem>Change Role</MudMenuItem>
-                <MudMenuItem>Log Off</MudMenuItem>
-                </ChildContent>
-                </MudMenu>*@
-            @*<MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />*@
         </MudAppBar>
-        <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
-            <MudDrawerHeader>
-                <MudText Typo="Typo.h5" Class="mt-1">Rooms</MudText>
-            </MudDrawerHeader>
+        <MudDrawer @bind-Open="_roomDrawerOpen" Elevation="2" ClipMode="DrawerClipMode.Always">
+            <RoomsList></RoomsList>
         </MudDrawer>
-        <MudDrawer @bind-Open="_userDrawerOpen" Elevation="2" Anchor="Anchor.End" DisableOverlay="true">
+        <MudDrawer @bind-Open="_userDrawerOpen" Elevation="2" Anchor="Anchor.End" DisableOverlay="true" ClipMode="DrawerClipMode.Always">
             <MudDrawerHeader>
                 <MudText Typo="Typo.h5" Class="mt-1">Change User Information</MudText>
             </MudDrawerHeader>
@@ -47,7 +33,7 @@
 
 </CascadingValue>
 @code {
-    bool _drawerOpen = false;
+    bool _roomDrawerOpen = false;
     bool _userDrawerOpen = false;
 
 
@@ -71,7 +57,7 @@
 
     void DrawerToggle()
     {
-        _drawerOpen = !_drawerOpen;
+        _roomDrawerOpen = !_roomDrawerOpen;
     }
     void UserDrawerToggle()
     {

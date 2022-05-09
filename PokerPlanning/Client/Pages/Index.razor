@@ -22,7 +22,7 @@
 else
 {
     <MudGrid>
-        <MudItem xl="2"> <RoomsList Rooms=@Rooms OnJoinRoomClick="@HandleJoinRoomClick" CurrentRoom="@GetConnectedRoom()"></RoomsList></MudItem>
+        @*<MudItem xl="2"> <RoomsList Rooms=@Rooms OnJoinRoomClick="@HandleJoinRoomClick" CurrentRoom="@GetConnectedRoom()"></RoomsList></MudItem>*@
         <MudItem xl="4">
             <MudText Typo="Typo.h4">Voting</MudText>
             <MudGrid>
@@ -69,8 +69,6 @@ else
     private static Dictionary<string, List<string>> Rooms = new Dictionary<string, List<string>>();
     private User currentUser = new();
 
-
-    //Note Move all hub stuff to appstate?
     protected override async Task OnInitializedAsync()
     {
         currentUser = await localStorage.GetItemAsync<User>(LOCAL_STORAGE_NAME);
@@ -86,7 +84,6 @@ else
             _hubService.OnShowVotes += ShowVotesUpdated;
             _hubService.OnClearVotes += ClearVotesUpdated;
             _hubService.OnUserIDUpdated += UserIDUpdated;
-
             await Connect();
         }
     }
@@ -95,47 +92,32 @@ else
 
     }
 
-    public void UserIDUpdated(object sender, string id)
+    private void UserIDUpdated(object sender, string id)
     {
         userId = id;
     }
 
-    public void UsersUpdated(object sender, Dictionary<string, User> hubUsers)
+    private void UsersUpdated(object sender, Dictionary<string, User> hubUsers)
     {
         Users = hubUsers;
     }
 
-    public void RoomsUpdated(object sender, Dictionary<string, List<string>> rooms)
-    {
-        Rooms = rooms;
-    }
-
-    public void ShowVotesUpdated(object sender) {
+    private void ShowVotesUpdated(object sender) {
         showVotes = true;
     }
 
-    public void ClearVotesUpdated(object sender) {
+    private void ClearVotesUpdated(object sender) {
         showVotes = false;
     }
 
-    public async Task Connect()
+    private async Task Connect()
     {
         await _hubService.Connect(userName, role);
     }
 
-    //private async Task HandleNameChange(string name)
-    //{
-    //    if (hubConnection != null)
-    //    {
-    //        await hubConnection.SendAsync("ChangeName", name);
-    //        StateHasChanged();
-    //    }
-    //}
-
     private async Task HandleVoting(string vote)
     {
         await _hubService.SendVote(vote);
-
     }
 
     private async Task HandleClearVotes()
@@ -154,13 +136,13 @@ else
         await _hubService.JoinRoom(room);
     }
 
-    public Variant GetVoteColor(string vote)
+    private Variant GetVoteColor(string vote)
     {
         var user = Users.Values.Where(x => x.Name != null && x.Name.Equals(userName)).FirstOrDefault();
         return user != null && user.Vote != null && user.Vote.Equals(vote) ? Variant.Filled : Variant.Outlined;
     }
 
-    public bool GetVoteDisable()
+    private bool GetVoteDisable()
     {
         var user = Users.Values.Where(x => x.Name != null && x.Name.Equals(userName)).FirstOrDefault();
         if (user != null && (user.Role == Role.Observer || user.Role == Role.Moderator))
@@ -176,7 +158,7 @@ else
         return false;
     }
 
-    public bool PersonalShowDisabled()
+    private bool PersonalShowDisabled()
     {
         if (Users != null && Users.ContainsKey(userId))
         {
@@ -189,11 +171,11 @@ else
         return true;
     }
 
-    public bool IsConnectDisabled => string.IsNullOrEmpty(userName) || string.IsNullOrWhiteSpace(userName);
+    private bool IsConnectDisabled => string.IsNullOrEmpty(userName) || string.IsNullOrWhiteSpace(userName);
 
-    public bool IsConnected => _hubService.IsConnected;
+    private bool IsConnected => _hubService.IsConnected;
 
-    public string GetConnectedRoom()
+    private string GetConnectedRoom()
     {
         if (Users != null && Users.ContainsKey(userId))
         {
@@ -202,7 +184,7 @@ else
         return "Lobby";
     }
 
-    public bool ShowUsers()
+    private bool ShowUsers()
     {
         if (Users.Keys.Count() >= 0 && Users.ContainsKey(userId) && Users[userId].Room != "Lobby")
         {
@@ -211,7 +193,7 @@ else
         return false;
     }
 
-    public bool ModeratorOnly()
+    private bool ModeratorOnly()
     {
         if (Users.Values.Any(x => x.Role == Role.Moderator))
         {

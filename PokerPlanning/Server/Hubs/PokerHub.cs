@@ -18,10 +18,10 @@ namespace PokerPlanning.Server.Hubs
             string? room = request != null ? request.Query["room"] : ROOM_LOBBY;
 
             Users.Add(Context.ConnectionId, new User { Name = username, Role = (Role)Enum.Parse(typeof(Role), role ?? Role.Observer.ToString()) });
+            await SendUserId();
             await JoinRoom(room ?? ROOM_LOBBY);
             await SendUsers();
             await SendRooms();
-            await SendUserId();
             await base.OnConnectedAsync();
         }
 

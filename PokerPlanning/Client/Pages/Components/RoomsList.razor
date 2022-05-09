@@ -1,7 +1,10 @@
 ﻿@inject IDialogService DialogService
-<MudText Typo="Typo.h4">Rooms</MudText>
+@inject HubService _hubService
 
 <MudGrid>
+    <MudItem xs="12">
+        <MudText Typo="Typo.h4">Rooms</MudText>
+    </MudItem>
     <MudItem xs="12">
         <MudButton Variant="Variant.Outlined" Color="Color.Secondary" EndIcon="@Icons.Filled.AddCircle" FullWidth="true" OnClick="@(() => CreateRoom())">Create Room</MudButton>
     </MudItem>
@@ -10,21 +13,26 @@
         <MudItem xs="12">
             @*MudBadge has bug stopping button from being full width*@
             @*<MudBadge Style="display:inherit" Content="@Rooms[room].Count()" Color="Color.Info" FullWidth="true" Overlap="true" Bordered="true">*@
-                <MudButton Variant="@GetConnectedRoomVariant(room)" Color="Color.Primary"  FullWidth="true" OnClick="@(() => OnJoinRoomClick.InvokeAsync(room))">@GetRoomButtonTitle(room)
-                 </MudButton>
-           @* </MudBadge>*@
+            <MudButton Variant="@GetConnectedRoomVariant(room)" Color="Color.Primary" FullWidth="true" OnClick="@(() => JoinRoom(room))">
+                @GetRoomButtonTitle(room)
+            </MudButton>
+            @* </MudBadge>*@
         </MudItem>
     }
 </MudGrid>
 @code {
-    [Parameter]
-    public Dictionary<string, List<string>> Rooms { get; set; } = new Dictionary<string, List<string>>();
 
-    [Parameter] 
-    public EventCallback<string> OnJoinRoomClick { get; set; }
+    private Dictionary<string, List<string>> Rooms { get; set; } = new Dictionary<string, List<string>>();
 
-    [Parameter]
-    public string CurrentRoom { get; set; } = string.Empty;
+    private string CurrentRoom { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        StateHasChanged();
+        _hubService.OnChange += StateHasChanged;
+        _hubService.OnRoomsUpdated += RoomsUpdated;
+    }
+
 
     async Task CreateRoom()
     {
@@ -33,17 +41,43 @@
 
         if (!result.Cancelled && !string.IsNullOrWhiteSpace(result.Data.ToString()))
         {
-            await OnJoinRoomClick.InvokeAsync(result.Data.ToString());
+            await _hubService.JoinRoom(result.Data.ToString());
         }
     }
 
-    public Variant GetConnectedRoomVariant(string room)
+    async Task JoinRoom(string room)
+    {
+        await _hubService.JoinRoom(room);
+    }
+
+    private void RoomsUpdated(object sender, Dictionary<string, List<string>> rooms)
+    {
+        Rooms = rooms;
+        CurrentRoom = GetConnectedRoom();
+    }
+
+    private Variant GetConnectedRoomVariant(string room)
     {
         return room == CurrentRoom ? Variant.Filled : Variant.Outlined;
     }
 
-    public string GetRoomButtonTitle(string room)
+    private string GetRoomButtonTitle(string room)
     {
         return room == CurrentRoom ? $"Currently in {room}" : $"Join {room} : Users {Rooms[room].Count()}";
+    }
+
+    private string GetConnectedRoom()
+    {
+        if (Rooms != null)
+        {
+            foreach(var room in Rooms)
+            {
+                if(room.Value.Contains(_hubService.CurrentUser.ID))
+                {
+                    return room.Key;
+                }
+            }
+        }
+        return "Lobby";
     }
 }

@@ -70,6 +70,7 @@ namespace PokerPlanning.Client.Services
             hubConnection.On<string>("RecieveUserId", (connectionId) =>
             {
                 userId = connectionId;
+                CurrentUser.ID = connectionId;
                 UpdateUserID();
                 NotifyStateChanged();
             });
