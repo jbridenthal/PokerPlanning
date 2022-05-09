@@ -13,20 +13,20 @@ namespace PokerPlanning.Client.Services
         public delegate void ClearVotesUpdated(object sender);
         public delegate void UserIDUpdated(object sender, string id);
 
-        public event Action OnChange;
-        public event UserUpdated OnUserUpdated;
-        public event UsersUpdated OnUsersUpdated;
-        public event RoomsUpdated OnRoomsUpdated;
-        public event ShowVotesUpdated OnShowVotes;
-        public event ClearVotesUpdated OnClearVotes;
-        public event UserIDUpdated OnUserIDUpdated;
+        public event Action? OnChange;
+        public event UserUpdated? OnUserUpdated;
+        public event UsersUpdated? OnUsersUpdated;
+        public event RoomsUpdated? OnRoomsUpdated;
+        public event ShowVotesUpdated? OnShowVotes;
+        public event ClearVotesUpdated? OnClearVotes;
+        public event UserIDUpdated? OnUserIDUpdated;
 
-        private void UpdateUser() => OnUserUpdated.Invoke(this, CurrentUser);
-        private void UpdateUsers() => OnUsersUpdated.Invoke(this, Users);
-        private void UpdateRooms() => OnRoomsUpdated.Invoke(this, Rooms);
-        private void UpdateShowVotes() => OnShowVotes.Invoke(this);
-        private void UpdateClearVotes() => OnClearVotes.Invoke(this);
-        private void UpdateUserID() => OnUserIDUpdated.Invoke(this, userId);
+        private void UpdateUser() => OnUserUpdated?.Invoke(this, CurrentUser);
+        private void UpdateUsers() => OnUsersUpdated?.Invoke(this, Users);
+        private void UpdateRooms() => OnRoomsUpdated?.Invoke(this, Rooms);
+        private void UpdateShowVotes() => OnShowVotes?.Invoke(this);
+        private void UpdateClearVotes() => OnClearVotes?.Invoke(this);
+        private void UpdateUserID() => OnUserIDUpdated?.Invoke(this, userId);
         public User CurrentUser { get; set; } = new();
 
         const string LOCAL_STORAGE_NAME = "PokerPlanning.UserInfo";
@@ -39,7 +39,7 @@ namespace PokerPlanning.Client.Services
         private Dictionary<string, User> Users = new Dictionary<string, User>();
         private static Dictionary<string, List<string>> Rooms = new Dictionary<string, List<string>>();
 
-        public HubService(NavigationManager navigationManager, Blazored.LocalStorage.ILocalStorageService localStorageService)
+        public HubService(NavigationManager navigationManager, ILocalStorageService localStorageService)
         {
             this.NavigationManager = navigationManager;
             this.localStorage = localStorageService;

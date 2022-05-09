@@ -1,4 +1,4 @@
-﻿@inject AppStateService _appStateService;
+﻿@inject HubService _hubService;
 @inherits LayoutComponentBase
 
 <CascadingValue Value="this">
@@ -7,38 +7,53 @@
     <MudSnackbarProvider />
     <MudLayout>
         <MudAppBar Fixed="false" Elevation="1">
+            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
             <MudText Typo="Typo.h5" Class="ml-3">Planning Poker</MudText>
             <MudSpacer />
-            <MudMenu FullWidth="true">
+             <MudChip Icon="@Icons.Material.Filled.Settings" Color="Color.Primary"  OnClick="@((e) => UserDrawerToggle())">@_hubService.CurrentUser?.Name</MudChip>
+            @*<MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.End" OnClick="@((e) => UserDrawerToggle())" />*@
+            @*            <MudMenu FullWidth="true">
                 <ActivatorContent>
-                    <MudChip Icon="@Icons.Material.Filled.Settings" Color="Color.Primary">@_appStateService.CurrentUser?.Name</MudChip>
+                <MudChip Icon="@Icons.Material.Filled.Settings" Color="Color.Primary">@_hubService.CurrentUser?.Name</MudChip>
                 </ActivatorContent>
                 <ChildContent>
-                    <MudMenuItem>Change Name</MudMenuItem>
-                    <MudMenuItem>Change Role</MudMenuItem>
+                <MudMenuItem>Change Name</MudMenuItem>
+                <MudMenuItem>Change Role</MudMenuItem>
+                <MudMenuItem>Log Off</MudMenuItem>
                 </ChildContent>
-            </MudMenu>
+                </MudMenu>*@
             @*<MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />*@
         </MudAppBar>
+        <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
+            <MudDrawerHeader>
+                <MudText Typo="Typo.h5" Class="mt-1">Rooms</MudText>
+            </MudDrawerHeader>
+        </MudDrawer>
+        <MudDrawer @bind-Open="_userDrawerOpen" Elevation="2" Anchor="Anchor.End" DisableOverlay="true">
+            <MudDrawerHeader>
+                <MudText Typo="Typo.h5" Class="mt-1">Change User Information</MudText>
+            </MudDrawerHeader>
+        </MudDrawer>
         <MudMainContent>
             <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
-
                 @Body
             </MudContainer>
             <footer>
                 <MudSpacer />  <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" /><MudLink Href="https://github.com/jbridenthal/PokerPlanning" Target="_blank" Color="Color.Dark">https://github.com/jbridenthal/PokerPlanning</MudLink>
             </footer>
         </MudMainContent>
+
     </MudLayout>
 
 </CascadingValue>
 @code {
-    private User? _currentUser;
-    public User? CurrentUser { get; set; }
+    bool _drawerOpen = false;
+    bool _userDrawerOpen = false;
+
 
     protected override async Task OnInitializedAsync()
     {
-        _appStateService.OnChange += StateHasChanged;
+        _hubService.OnChange += StateHasChanged;
     }
 
     MudTheme MyCustomTheme = new MudTheme()
@@ -53,8 +68,17 @@
             }
         };
 
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+    void UserDrawerToggle()
+    {
+        _userDrawerOpen = !_userDrawerOpen;
+    }
     public void Dispose()
     {
-        _appStateService.OnChange += StateHasChanged;
+        _hubService.OnChange += StateHasChanged;
     }
 }

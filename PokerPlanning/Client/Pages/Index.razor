@@ -3,7 +3,6 @@
 @inject IJSRuntime JSRuntime;
 @inject ISnackbar Snackbar
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
-@inject AppStateService _appStateService
 @inject HubService _hubService
 @implements IAsyncDisposable
 
@@ -79,10 +78,8 @@ else
         {
             userName = currentUser.Name;
             role = currentUser.Role;
-            _appStateService.SetUser(currentUser);
 
             StateHasChanged();
-            _appStateService.OnChange += StateHasChanged;
             _hubService.OnChange += StateHasChanged;
             _hubService.OnUserUpdated += UserUpdated;
             _hubService.OnUsersUpdated += UsersUpdated;
@@ -181,21 +178,14 @@ else
 
     public bool PersonalShowDisabled()
     {
-        Console.WriteLine("Enter");
-        Console.WriteLine(Users.ContainsKey(userId));
-        Console.WriteLine(userId);
-        Console.WriteLine(Users.Count());
         if (Users != null && Users.ContainsKey(userId))
         {
-            Console.WriteLine("First if");
             if (Users[userId].Role == Role.Observer || Users[userId].Role == Role.Moderator)
             {
-                Console.WriteLine("second if");
                 return false;
             }
             return string.IsNullOrWhiteSpace(Users[userId].Vote);
         }
-        Console.WriteLine("End of the line");
         return true;
     }
 
