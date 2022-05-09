@@ -6,3 +6,5 @@ global using MudBlazor;
 global using MudBlazor.Services;
 global using PokerPlanning.Client;
 global using PokerPlanning.Shared;
+global using Microsoft.AspNetCore.SignalR.Client;
+global using Microsoft.AspNetCore.Components;

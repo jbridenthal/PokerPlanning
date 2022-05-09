@@ -4,6 +4,7 @@
 @inject ISnackbar Snackbar
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject AppStateService _appStateService
+@inject HubService _hubService
 @implements IAsyncDisposable
 
 
@@ -38,7 +39,7 @@ else
             </MudGrid>
             <MudGrid>
                 <MudItem xs="9">
-                    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" FullWidth="true" EndIcon="@Icons.Filled.Person"  OnClick="()=> showVotes = true" Disabled="@PersonalShowDisabled()"> Show votes for only me </MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" FullWidth="true" EndIcon="@Icons.Filled.Person" OnClick="()=> showVotes = true" Disabled="@PersonalShowDisabled()"> Show votes for only me </MudButton>
                 </MudItem>
                 <MudItem xs="9">
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" EndIcon="@Icons.Filled.People" OnClick="()=> HandleShowVotes()" Disabled="@ModeratorOnly()"> Show votes for everyone</MudButton>
@@ -59,13 +60,8 @@ else
 }
 
 @code {
-    [CascadingParameter]
-    public MainLayout Layout { get; set; }
-
     const string LOCAL_STORAGE_NAME = "PokerPlanning.UserInfo";
-    private HubConnection? hubConnection;
     private string userName { get; set; } = string.Empty;
-    private string message = string.Empty;
     private string userId = string.Empty;
     private int[] sizeValues = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
     private Role role = Role.Observer;
@@ -74,116 +70,82 @@ else
     private static Dictionary<string, List<string>> Rooms = new Dictionary<string, List<string>>();
     private User currentUser = new();
 
+
+    //Note Move all hub stuff to appstate?
     protected override async Task OnInitializedAsync()
     {
         currentUser = await localStorage.GetItemAsync<User>(LOCAL_STORAGE_NAME);
-        Layout.CurrentUser = currentUser;
         if (!string.IsNullOrWhiteSpace(currentUser.Name))
         {
             userName = currentUser.Name;
             role = currentUser.Role;
             _appStateService.SetUser(currentUser);
-            
+
             StateHasChanged();
             _appStateService.OnChange += StateHasChanged;
+            _hubService.OnChange += StateHasChanged;
+            _hubService.OnUserIDUpdated += UserUpdated;
+            _hubService.OnUsersUpdated += UsersUpdated;
+            _hubService.OnShowVotes += ShowVotesUpdated;
+            _hubService.OnClearVotes += ClearVotesUpdated;
             await Connect();
         }
     }
-
-    private async Task Connect()
+    static void UserUpdated(object sender, User user)
     {
-        hubConnection = new HubConnectionBuilder()
-        .WithUrl(NavigationManager.ToAbsoluteUri($"/pokerhub?username={userName}&role={role}"))
-        .WithAutomaticReconnect()
-        .Build();
 
-        currentUser = new User
-            {
-                Name = userName,
-                Role = role
-            };
-
-        await localStorage.SetItemAsync(LOCAL_STORAGE_NAME, currentUser);
-
-        hubConnection.On<string>("RecieveUserId", (connectionId) =>
-       {
-           userId = connectionId;
-           StateHasChanged();
-       });
-
-        hubConnection.On<Dictionary<string, User>>("RecieveUsers", (users) =>
-        {
-            Users = users;
-            StateHasChanged();
-        });
-
-
-        hubConnection.On("ShowVotes", () =>
-        {
-            showVotes = true;
-            StateHasChanged();
-        });
-
-
-        hubConnection.On<Dictionary<string, List<string>>>("RecieveRooms", (rooms) =>
-        {
-            Rooms = rooms;
-            StateHasChanged();
-        });
-
-        hubConnection.On("ClearVotes", () =>
-        {
-            showVotes = false;
-            StateHasChanged();
-        });
-
-        try
-        {
-            await hubConnection.StartAsync();
-        }
-        catch (Exception ex)
-        {
-            Console.Write(ex.Message);
-        }
+    }
+    public void UsersUpdated(object sender, Dictionary<string, User> hubUsers)
+    {
+        Users = hubUsers;
     }
 
+    public void RoomsUpdated(object sender, Dictionary<string, List<string>> rooms)
+    {
+        Rooms = rooms;
+    }
 
+    public void ShowVotesUpdated(object sender) {
+        showVotes = true;
+    }
+        
+    public void ClearVotesUpdated(object sender) {
+        showVotes = false;
+    }
+
+    public async Task Connect()
+    {
+        await _hubService.Connect(userName, role);
+    }
+
+    //private async Task HandleNameChange(string name)
+    //{
+    //    if (hubConnection != null)
+    //    {
+    //        await hubConnection.SendAsync("ChangeName", name);
+    //        StateHasChanged();
+    //    }
+    //}
 
     private async Task HandleVoting(string vote)
     {
-        if (hubConnection != null)
-        {
-            await hubConnection.SendAsync("SendVote", vote);
-            StateHasChanged();
-        }
+        await _hubService.SendVote(vote);
     }
 
     private async Task HandleClearVotes()
     {
-        if (hubConnection != null)
-        {
-            await hubConnection.SendAsync("ClearVotes");
-            showVotes = false;
-            StateHasChanged();
-        }
+        await _hubService.ClearVotes();
+        showVotes = false;
     }
 
     private async Task HandleShowVotes()
     {
-        if (hubConnection != null)
-        {
-            await hubConnection.SendAsync("ShowVotes");
-            StateHasChanged();
-        }
+        await _hubService.ShowVotes();
     }
 
     private async Task HandleJoinRoomClick(string room)
     {
-        if (hubConnection != null)
-        {
-            await hubConnection.SendAsync("JoinRoom", room);
-            StateHasChanged();
-        }
+        await _hubService.JoinRoom(room);
     }
 
     public Variant GetVoteColor(string vote)
@@ -208,10 +170,11 @@ else
         return false;
     }
 
-    public bool PersonalShowDisabled() {
+    public bool PersonalShowDisabled()
+    {
         if (Users != null && Users.ContainsKey(userId))
         {
-            if(Users[userId].Role == Role.Observer ||Users[userId].Role == Role.Moderator)
+            if (Users[userId].Role == Role.Observer || Users[userId].Role == Role.Moderator)
             {
                 return false;
             }
@@ -219,10 +182,10 @@ else
         }
         return true;
     }
-    
+
     public bool IsConnectDisabled => string.IsNullOrEmpty(userName) || string.IsNullOrWhiteSpace(userName);
 
-    public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
+    public bool IsConnected => _hubService.IsConnected;
 
     public string GetConnectedRoom()
     {
@@ -257,9 +220,6 @@ else
 
     public async ValueTask DisposeAsync()
     {
-        if (hubConnection != null)
-        {
-            await hubConnection.DisposeAsync();
-        }
+        await _hubService.Dispose();
     }
 }

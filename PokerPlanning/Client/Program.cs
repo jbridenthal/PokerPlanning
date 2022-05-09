@@ -5,6 +5,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<AppStateService>();
+builder.Services.AddScoped<HubService>();
 builder.Services.AddMudServices();
 builder.Services.AddMudServices(config =>
 {

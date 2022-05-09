@@ -105,6 +105,11 @@ namespace PokerPlanning.Server.Hubs
             await SendUsers();
         }
 
+        public async Task ChangeName(string name)
+        {
+            Users[Context.ConnectionId].Name = name;
+            await SendUsers();
+        }
         public async Task LeaveRoom(string room)
         {
             if (Rooms[room] != null)
