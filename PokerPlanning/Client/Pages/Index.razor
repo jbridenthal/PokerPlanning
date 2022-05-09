@@ -75,7 +75,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         currentUser = await localStorage.GetItemAsync<User>(LOCAL_STORAGE_NAME);
-        if (!string.IsNullOrWhiteSpace(currentUser.Name))
+        if (currentUser != null && !string.IsNullOrWhiteSpace(currentUser.Name))
         {
             userName = currentUser.Name;
             role = currentUser.Role;
@@ -84,10 +84,12 @@ else
             StateHasChanged();
             _appStateService.OnChange += StateHasChanged;
             _hubService.OnChange += StateHasChanged;
-            _hubService.OnUserIDUpdated += UserUpdated;
+            _hubService.OnUserUpdated += UserUpdated;
             _hubService.OnUsersUpdated += UsersUpdated;
             _hubService.OnShowVotes += ShowVotesUpdated;
             _hubService.OnClearVotes += ClearVotesUpdated;
+            _hubService.OnUserIDUpdated += UserIDUpdated;
+
             await Connect();
         }
     }
@@ -95,6 +97,12 @@ else
     {
 
     }
+
+    public void UserIDUpdated(object sender, string id)
+    {
+        userId = id;
+    }
+
     public void UsersUpdated(object sender, Dictionary<string, User> hubUsers)
     {
         Users = hubUsers;
@@ -108,7 +116,7 @@ else
     public void ShowVotesUpdated(object sender) {
         showVotes = true;
     }
-        
+
     public void ClearVotesUpdated(object sender) {
         showVotes = false;
     }
@@ -130,6 +138,7 @@ else
     private async Task HandleVoting(string vote)
     {
         await _hubService.SendVote(vote);
+
     }
 
     private async Task HandleClearVotes()
@@ -172,14 +181,21 @@ else
 
     public bool PersonalShowDisabled()
     {
+        Console.WriteLine("Enter");
+        Console.WriteLine(Users.ContainsKey(userId));
+        Console.WriteLine(userId);
+        Console.WriteLine(Users.Count());
         if (Users != null && Users.ContainsKey(userId))
         {
+            Console.WriteLine("First if");
             if (Users[userId].Role == Role.Observer || Users[userId].Role == Role.Moderator)
             {
+                Console.WriteLine("second if");
                 return false;
             }
             return string.IsNullOrWhiteSpace(Users[userId].Vote);
         }
+        Console.WriteLine("End of the line");
         return true;
     }
 

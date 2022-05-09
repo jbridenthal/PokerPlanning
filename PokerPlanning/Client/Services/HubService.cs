@@ -11,19 +11,22 @@ namespace PokerPlanning.Client.Services
         public delegate void RoomsUpdated(object sender, Dictionary<string, List<string>> rooms);
         public delegate void ShowVotesUpdated(object sender);
         public delegate void ClearVotesUpdated(object sender);
+        public delegate void UserIDUpdated(object sender, string id);
 
         public event Action OnChange;
-        public event UserUpdated OnUserIDUpdated;
+        public event UserUpdated OnUserUpdated;
         public event UsersUpdated OnUsersUpdated;
         public event RoomsUpdated OnRoomsUpdated;
         public event ShowVotesUpdated OnShowVotes;
         public event ClearVotesUpdated OnClearVotes;
+        public event UserIDUpdated OnUserIDUpdated;
 
-        private void UpdateUser() => OnUserIDUpdated.Invoke(this, CurrentUser);
+        private void UpdateUser() => OnUserUpdated.Invoke(this, CurrentUser);
         private void UpdateUsers() => OnUsersUpdated.Invoke(this, Users);
         private void UpdateRooms() => OnRoomsUpdated.Invoke(this, Rooms);
         private void UpdateShowVotes() => OnShowVotes.Invoke(this);
         private void UpdateClearVotes() => OnClearVotes.Invoke(this);
+        private void UpdateUserID() => OnUserIDUpdated.Invoke(this, userId);
         public User CurrentUser { get; set; } = new();
 
         const string LOCAL_STORAGE_NAME = "PokerPlanning.UserInfo";
@@ -67,6 +70,8 @@ namespace PokerPlanning.Client.Services
             hubConnection.On<string>("RecieveUserId", (connectionId) =>
             {
                 userId = connectionId;
+                UpdateUserID();
+                NotifyStateChanged();
             });
 
             hubConnection.On<Dictionary<string, User>>("RecieveUsers", (users) =>
