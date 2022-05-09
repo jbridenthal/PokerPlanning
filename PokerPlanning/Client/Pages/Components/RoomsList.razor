@@ -1,19 +1,16 @@
 ﻿@inject IDialogService DialogService
 @inject HubService _hubService
 
-<MudGrid>
-    <MudItem xs="12">
-        <MudText Typo="Typo.h4">Rooms</MudText>
-    </MudItem>
-    <MudItem xs="12">
+<MudGrid Justify="Justify.Center" Class="d-inline-flex pt-2">
+    <MudItem xs="10">
         <MudButton Variant="Variant.Outlined" Color="Color.Secondary" EndIcon="@Icons.Filled.AddCircle" FullWidth="true" OnClick="@(() => CreateRoom())">Create Room</MudButton>
     </MudItem>
     @foreach (var room in Rooms.Keys)
     {
-        <MudItem xs="12">
+        <MudItem xs="10">
             @*MudBadge has bug stopping button from being full width*@
             @*<MudBadge Style="display:inherit" Content="@Rooms[room].Count()" Color="Color.Info" FullWidth="true" Overlap="true" Bordered="true">*@
-            <MudButton Variant="@GetConnectedRoomVariant(room)" Color="Color.Primary" FullWidth="true" OnClick="@(() => JoinRoom(room))">
+            <MudButton  Class="d-inline-flex" Variant="@GetConnectedRoomVariant(room)" Color="Color.Primary" FullWidth="true" OnClick="@(() => JoinRoom(room))">
                 @GetRoomButtonTitle(room)
             </MudButton>
             @* </MudBadge>*@

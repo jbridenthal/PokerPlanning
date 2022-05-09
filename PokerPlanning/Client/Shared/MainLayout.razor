@@ -7,18 +7,16 @@
     <MudSnackbarProvider />
     <MudLayout>
         <MudAppBar Fixed="false" Elevation="1">
-            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-            <MudText Typo="Typo.h5" Class="ml-3">Planning Poker</MudText>
-            <MudSpacer />
-             <MudChip Icon="@Icons.Material.Filled.Settings" Color="Color.Primary"  OnClick="@((e) => UserDrawerToggle())">@_hubService.CurrentUser?.Name</MudChip>
+            <MudChip Icon="@Icons.Filled.MeetingRoom" Color="Color.Tertiary" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" >Rooms</MudChip>
+             <MudSpacer /> 
+             <MudText Typo="Typo.h5" Class="ml-3">Planning Poker</MudText><MudSpacer />
+             <MudChip Icon="@Icons.Filled.Person" Color="Color.Tertiary"  OnClick="@((e) => UserDrawerToggle())">@_hubService.CurrentUser?.Name</MudChip>
         </MudAppBar>
-        <MudDrawer @bind-Open="_roomDrawerOpen" Elevation="2" ClipMode="DrawerClipMode.Always">
+        <MudDrawer @bind-Open="_roomDrawerOpen" Elevation="2" ClipMode="DrawerClipMode.Always" Class="d-inline-flex">
             <RoomsList></RoomsList>
         </MudDrawer>
-        <MudDrawer @bind-Open="_userDrawerOpen" Elevation="2" Anchor="Anchor.End" DisableOverlay="true" ClipMode="DrawerClipMode.Always">
-            <MudDrawerHeader>
-                <MudText Typo="Typo.h5" Class="mt-1">Change User Information</MudText>
-            </MudDrawerHeader>
+        <MudDrawer @bind-Open="_userDrawerOpen" Elevation="2" Anchor="Anchor.End" DisableOverlay="true" ClipMode="DrawerClipMode.Always" Class="d-inline-flex">
+                <UserInformation></UserInformation>
         </MudDrawer>
         <MudMainContent>
             <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
