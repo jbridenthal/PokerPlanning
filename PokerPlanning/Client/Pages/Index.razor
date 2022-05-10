@@ -11,7 +11,7 @@
 
 @if (!IsConnected)
 {
-    <MudGrid  Class="d-flex justify-center flex-grow-1 gap-4">
+    <MudGrid>
         <MudItem xl=4></MudItem>
         <MudItem xl="4">
             <Username @bind-UserName="@userName" @bind-SelectedRole="@role" OnConnectCallBack="Connect" />
