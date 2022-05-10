@@ -18,10 +18,10 @@ namespace PokerPlanning.Server.Hubs
             string? room = request != null ? request.Query["room"] : ROOM_LOBBY;
 
             Users.Add(Context.ConnectionId, new User { Name = username, Role = (Role)Enum.Parse(typeof(Role), role ?? Role.Observer.ToString()) });
+            await SendUserId();
             await JoinRoom(room ?? ROOM_LOBBY);
             await SendUsers();
             await SendRooms();
-            await SendUserId();
             await base.OnConnectedAsync();
         }
 
@@ -74,7 +74,7 @@ namespace PokerPlanning.Server.Hubs
                      Users[key].Vote = null;
                 }
             }
-            await Clients.Group(room).SendAsync("ClearVotes");
+            await Clients.Group(room ?? ROOM_LOBBY).SendAsync("ClearVotes");
             await SendUsers();
         }
 
@@ -105,6 +105,11 @@ namespace PokerPlanning.Server.Hubs
             await SendUsers();
         }
 
+        public async Task ChangeName(string name)
+        {
+            Users[Context.ConnectionId].Name = name;
+            await SendUsers();
+        }
         public async Task LeaveRoom(string room)
         {
             if (Rooms[room] != null)
@@ -119,6 +124,23 @@ namespace PokerPlanning.Server.Hubs
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, room);
             await SendRooms();
             await SendUsers();
+        }
+
+        public async Task UpdateUser(User user)
+        {
+            Users[Context.ConnectionId].Name = user.Name;
+            Users[Context.ConnectionId].Role = user.Role;
+            await SendUsers();
+        }
+
+        public async Task Logout()
+        {
+            var user = Users.FirstOrDefault(u => u.Key == Context.ConnectionId);
+            Users.Remove(Context.ConnectionId);
+            await LeaveRoom(user.Value.Room ?? "");
+            await SendUsers();
+            await SendRooms();
+            Context.Abort();
         }
     }
 }
