@@ -8,10 +8,10 @@
     <MudSnackbarProvider />
     <MudLayout>
         <MudAppBar Fixed="false" Elevation="1">
-            <MudChip Icon="@Icons.Filled.MeetingRoom" Color="Color.Tertiary" Disabled="@DisableButtons" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())">Rooms</MudChip>
+            <MudChip Icon="@Icons.Filled.MeetingRoom"  Size="Size.Large" Color="Color.Tertiary" Disabled="@DisableButtons" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())">Rooms</MudChip>
             <MudSpacer />
             <MudText Typo="Typo.h5" Class="ml-3">Planning Poker</MudText><MudSpacer />
-            <MudChip Icon="@Icons.Filled.Person" Color="Color.Tertiary" Disabled="@DisableButtons" OnClick="@((e) => UserDrawerToggle())">@_hubService.CurrentUser?.Name</MudChip>
+            <MudChip CloseIcon="@Icons.Filled.Person" OnClose="Closed" Size="Size.Large" Color="Color.Tertiary" Disabled="@DisableButtons" OnClick="@((e) => UserDrawerToggle())">@_hubService.CurrentUser?.Name</MudChip>
         </MudAppBar>
         <MudDrawer @bind-Open="_roomDrawerOpen" Elevation="2" ClipMode="DrawerClipMode.Always" Class="d-inline-flex">
             <RoomsList></RoomsList>
@@ -68,6 +68,12 @@
         DialogOptions options = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         var dialog = _dialogService.Show<ChangeNotes>("Change Notes", options);
     }
+
+    async Task Closed()
+    {
+        //this is only needed so the mudchip icon can be at the end
+    }
+
 
     public void Dispose()
     {
