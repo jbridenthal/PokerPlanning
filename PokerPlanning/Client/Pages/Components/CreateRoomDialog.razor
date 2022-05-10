@@ -1,6 +1,5 @@
 ﻿@inject ISnackbar Snackbar
 
-
 <MudDialog>
     <TitleContent>
         <MudText Typo="Typo.h6">
@@ -18,7 +17,13 @@
 </MudDialog>
 
 @code {
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+     MudDialogInstance MudDialog { get; set; }
+
+    public CreateRoomDialog()
+    {
+        MudDialog = new MudDialogInstance();
+    }
+
     private string newRoomName = string.Empty;
 
     private void Cancel()

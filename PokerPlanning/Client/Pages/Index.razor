@@ -87,7 +87,7 @@ else
             await Connect();
         }
     }
-    async void UserLogout(object sender)
+    private void UserLogout(object sender)
     {
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }

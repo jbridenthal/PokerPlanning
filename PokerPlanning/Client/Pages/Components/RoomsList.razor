@@ -18,6 +18,7 @@
     }
 </MudGrid>
 @code {
+    const string LOBBY = "Lobby";
 
     private Dictionary<string, List<string>> Rooms { get; set; } = new Dictionary<string, List<string>>();
 
@@ -28,6 +29,7 @@
         StateHasChanged();
         _hubService.OnChange += StateHasChanged;
         _hubService.OnRoomsUpdated += RoomsUpdated;
+        await Task.CompletedTask;
     }
 
 
@@ -38,7 +40,7 @@
 
         if (!result.Cancelled && !string.IsNullOrWhiteSpace(result.Data.ToString()))
         {
-            await _hubService.JoinRoom(result.Data.ToString());
+            await _hubService.JoinRoom(result.Data.ToString() ?? LOBBY);
         }
     }
 
@@ -69,7 +71,7 @@
         {
             foreach(var room in Rooms)
             {
-                if(room.Value.Contains(_hubService.CurrentUser.ID))
+                if(room.Value.Contains(_hubService.CurrentUser.ID ?? string.Empty))
                 {
                     return room.Key;
                 }

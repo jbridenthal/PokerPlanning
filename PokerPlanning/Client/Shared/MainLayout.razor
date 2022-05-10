@@ -40,6 +40,7 @@
     protected override async Task OnInitializedAsync()
     {
         _hubService.OnChange += StateHasChanged;
+        await Task.CompletedTask;
     }
 
     MudTheme MyCustomTheme = new MudTheme()
@@ -67,11 +68,13 @@
     {
         DialogOptions options = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         var dialog = _dialogService.Show<ChangeNotes>("Change Notes", options);
+        await Task.CompletedTask;
     }
 
     async Task Closed()
     {
         //this is only needed so the mudchip icon can be at the end
+        await Task.CompletedTask;
     }
 
 
