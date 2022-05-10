@@ -140,7 +140,6 @@ namespace PokerPlanning.Server.Hubs
             await LeaveRoom(user.Value.Room ?? "");
             await SendUsers();
             await SendRooms();
-            await base.OnDisconnectedAsync(new Exception("User manually disconnected"));
             Context.Abort();
         }
     }

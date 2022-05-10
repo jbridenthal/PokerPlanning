@@ -71,19 +71,19 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        _hubService.OnChange += StateHasChanged;
+        _hubService.OnUsersUpdated += UsersUpdated;
+        _hubService.OnShowVotes += ShowVotesUpdated;
+        _hubService.OnClearVotes += ClearVotesUpdated;
+        _hubService.OnUserIDUpdated += UserIDUpdated;
+        _hubService.OnUserLogOut += UserLogout;
+                    
         currentUser = await localStorage.GetItemAsync<User>(LOCAL_STORAGE_NAME);
         if (currentUser != null && !string.IsNullOrWhiteSpace(currentUser.Name))
         {
             userName = currentUser.Name;
             role = currentUser.Role;
-
             StateHasChanged();
-            _hubService.OnChange += StateHasChanged;
-            _hubService.OnUsersUpdated += UsersUpdated;
-            _hubService.OnShowVotes += ShowVotesUpdated;
-            _hubService.OnClearVotes += ClearVotesUpdated;
-            _hubService.OnUserIDUpdated += UserIDUpdated;
-            _hubService.OnUserLogOut += UserLogout;
             await Connect();
         }
     }
@@ -102,11 +102,13 @@ else
         Users = hubUsers;
     }
 
-    private void ShowVotesUpdated(object sender) {
+    private void ShowVotesUpdated(object sender)
+    {
         showVotes = true;
     }
 
-    private void ClearVotesUpdated(object sender) {
+    private void ClearVotesUpdated(object sender)
+    {
         showVotes = false;
     }
 
