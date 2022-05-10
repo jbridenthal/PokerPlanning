@@ -2,6 +2,8 @@
 @inject NavigationManager NavigationManager;
 @inject IJSRuntime JSRuntime;
 @inject ISnackbar Snackbar
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject HubService _hubService
 @implements IAsyncDisposable
 
 
@@ -20,7 +22,7 @@
 else
 {
     <MudGrid>
-        <MudItem xl="2"> <RoomsList Rooms=@Rooms OnJoinRoomClick="@HandleJoinRoomClick" CurrentRoom="@GetConnectedRoom()"></RoomsList></MudItem>
+        @*<MudItem xl="2"> <RoomsList Rooms=@Rooms OnJoinRoomClick="@HandleJoinRoomClick" CurrentRoom="@GetConnectedRoom()"></RoomsList></MudItem>*@
         <MudItem xl="4">
             <MudText Typo="Typo.h4">Voting</MudText>
             <MudGrid>
@@ -34,134 +36,115 @@ else
                     <MudButton Disabled="GetVoteDisable()" Variant="GetVoteColor('?'.ToString())" Color="Color.Primary" Size="Size.Large" OnClick="() => HandleVoting('?'.ToString())"> ? </MudButton>
                 </MudItem>
             </MudGrid>
-            <MudGrid>          
+            <MudGrid>
                 <MudItem xs="9">
-                    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" FullWidth="true" EndIcon="@Icons.Filled.Person"  OnClick="()=> showVotes = true" Disabled="@PersonalShowDisabled()"> Show votes for only me </MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" FullWidth="true" EndIcon="@Icons.Filled.Person" OnClick="()=> showVotes = true" Disabled="@PersonalShowDisabled()"> Show votes for only me </MudButton>
                 </MudItem>
                 <MudItem xs="9">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"  EndIcon="@Icons.Filled.People" OnClick="()=> HandleShowVotes()" Disabled="@ModeratorOnly()"> Show votes for everyone</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" EndIcon="@Icons.Filled.People" OnClick="()=> HandleShowVotes()" Disabled="@ModeratorOnly()"> Show votes for everyone</MudButton>
                 </MudItem>
                 <MudItem xs="9">
-                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true"  OnClick="()=> HandleClearVotes()" Disabled="@ModeratorOnly()"> Clear votes for everyone</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true" OnClick="()=> HandleClearVotes()" Disabled="@ModeratorOnly()"> Clear votes for everyone</MudButton>
                 </MudItem>
             </MudGrid>
-            @if(ModeratorOnly())
+            @if (ModeratorOnly())
             {
                 <MudText Color="Color.Error">Only moderators can show or clear votes for everyone at this time</MudText>
             }
         </MudItem>
         <MudItem xl="4">
             <UsersList Users=@Users ShowVotes="@showVotes" Room="@GetConnectedRoom()"></UsersList>
-            </MudItem>
+        </MudItem>
     </MudGrid>
 }
 
 @code {
-    private HubConnection? hubConnection;
+    const string LOCAL_STORAGE_NAME = "PokerPlanning.UserInfo";
     private string userName { get; set; } = string.Empty;
-    private string message = string.Empty;
     private string userId = string.Empty;
     private int[] sizeValues = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
     private Role role = Role.Observer;
     private Dictionary<string, User> Users = new Dictionary<string, User>();
     private bool showVotes = false;
     private static Dictionary<string, List<string>> Rooms = new Dictionary<string, List<string>>();
+    private User currentUser = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _hubService.OnChange += StateHasChanged;
+        _hubService.OnUsersUpdated += UsersUpdated;
+        _hubService.OnShowVotes += ShowVotesUpdated;
+        _hubService.OnClearVotes += ClearVotesUpdated;
+        _hubService.OnUserIDUpdated += UserIDUpdated;
+        _hubService.OnUserLogOut += UserLogout;
+                    
+        currentUser = await localStorage.GetItemAsync<User>(LOCAL_STORAGE_NAME);
+        if (currentUser != null && !string.IsNullOrWhiteSpace(currentUser.Name))
+        {
+            userName = currentUser.Name;
+            role = currentUser.Role;
+            StateHasChanged();
+            await Connect();
+        }
+    }
+    async void UserLogout(object sender)
+    {
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+    }
+
+    private void UserIDUpdated(object sender, string id)
+    {
+        userId = id;
+    }
+
+    private void UsersUpdated(object sender, Dictionary<string, User> hubUsers)
+    {
+        Users = hubUsers;
+    }
+
+    private void ShowVotesUpdated(object sender)
+    {
+        showVotes = true;
+    }
+
+    private void ClearVotesUpdated(object sender)
+    {
+        showVotes = false;
+    }
 
     private async Task Connect()
     {
-        hubConnection = new HubConnectionBuilder()
-        .WithUrl(NavigationManager.ToAbsoluteUri($"/pokerhub?username={userName}&role={role}"))
-        .WithAutomaticReconnect()
-        .Build();
-
-        hubConnection.On<string>("RecieveUserId", (connectionId) =>
-       {
-           userId = connectionId;
-           StateHasChanged();
-       });
-
-        hubConnection.On<Dictionary<string, User>>("RecieveUsers", (users) =>
-        {
-            Users = users;
-            StateHasChanged();
-        });
-
-
-        hubConnection.On("ShowVotes", () =>
-        {
-            showVotes = true;
-            StateHasChanged();
-        });
-
-
-        hubConnection.On<Dictionary<string, List<string>>>("RecieveRooms", (rooms) =>
-        {
-            Rooms = rooms;
-            StateHasChanged();
-        });
-
-        hubConnection.On("ClearVotes", () =>
-        {
-            showVotes = false;
-            StateHasChanged();
-        });
-
-        try
-        {
-            await hubConnection.StartAsync();
-        }
-        catch (Exception ex)
-        {
-            Console.Write(ex.Message);
-        }
+        await _hubService.Connect(userName, role);
     }
-
-
 
     private async Task HandleVoting(string vote)
     {
-        if (hubConnection != null)
-        {
-            await hubConnection.SendAsync("SendVote", vote);
-            StateHasChanged();
-        }
+        await _hubService.SendVote(vote);
     }
 
     private async Task HandleClearVotes()
     {
-        if (hubConnection != null)
-        {
-            await hubConnection.SendAsync("ClearVotes");
-            showVotes = false;
-            StateHasChanged();
-        }
+        await _hubService.ClearVotes();
+        showVotes = false;
     }
 
     private async Task HandleShowVotes()
     {
-        if (hubConnection != null)
-        {
-            await hubConnection.SendAsync("ShowVotes");
-            StateHasChanged();
-        }
+        await _hubService.ShowVotes();
     }
 
     private async Task HandleJoinRoomClick(string room)
     {
-        if (hubConnection != null)
-        {
-            await hubConnection.SendAsync("JoinRoom", room);
-            StateHasChanged();
-        }
+        await _hubService.JoinRoom(room);
     }
 
-    public Variant GetVoteColor(string vote)
+    private Variant GetVoteColor(string vote)
     {
         var user = Users.Values.Where(x => x.Name != null && x.Name.Equals(userName)).FirstOrDefault();
         return user != null && user.Vote != null && user.Vote.Equals(vote) ? Variant.Filled : Variant.Outlined;
     }
 
-    public bool GetVoteDisable()
+    private bool GetVoteDisable()
     {
         var user = Users.Values.Where(x => x.Name != null && x.Name.Equals(userName)).FirstOrDefault();
         if (user != null && (user.Role == Role.Observer || user.Role == Role.Moderator))
@@ -177,10 +160,12 @@ else
         return false;
     }
 
-    public bool PersonalShowDisabled() {
+    private bool PersonalShowDisabled()
+    {
         if (Users != null && Users.ContainsKey(userId))
         {
-            if(Users[userId].Role == Role.Observer || Users[userId].Role == Role.Moderator)
+            if (Users[userId].Role == Role.Observer || Users[userId].Role == Role.Moderator)
+
             {
                 return false;
             }
@@ -188,12 +173,12 @@ else
         }
         return true;
     }
-    
-    public bool IsConnectDisabled => string.IsNullOrEmpty(userName) || string.IsNullOrWhiteSpace(userName);
 
-    public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
+    private bool IsConnectDisabled => string.IsNullOrEmpty(userName) || string.IsNullOrWhiteSpace(userName);
 
-    public string GetConnectedRoom()
+    private bool IsConnected => _hubService.IsConnected;
+
+    private string GetConnectedRoom()
     {
         if (Users != null && Users.ContainsKey(userId))
         {
@@ -202,7 +187,7 @@ else
         return "Lobby";
     }
 
-    public bool ShowUsers()
+    private bool ShowUsers()
     {
         if (Users.Keys.Count() >= 0 && Users.ContainsKey(userId) && Users[userId].Room != "Lobby")
         {
@@ -211,9 +196,10 @@ else
         return false;
     }
 
-    public bool ModeratorOnly()
+    private bool ModeratorOnly()
     {
-        if(Users.Values.Any(x=>x.Role == Role.Moderator)) {
+        if (Users.Values.Any(x => x.Role == Role.Moderator))
+        {
             if (role != Role.Moderator)
             {
                 return true;
@@ -225,9 +211,6 @@ else
 
     public async ValueTask DisposeAsync()
     {
-        if (hubConnection != null)
-        {
-            await hubConnection.DisposeAsync();
-        }
+        await _hubService.Dispose();
     }
 }

@@ -1,0 +1,61 @@
+﻿@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+@inject HubService _hubService;
+
+<MudGrid Class="pa-2">
+    <MudItem xs="12">
+        <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+            <MudTextField T="string" Label="Username" Required="true" @bind-Value="@username" RequiredError="User name is required!" />
+            <MudSelect T="Role" Label="Role" AnchorOrigin="Origin.BottomCenter" @bind-Value="@role">
+                @foreach (Role item in Enum.GetValues(typeof(Role)))
+                {
+                    <MudSelectItem Value="@item">@item</MudSelectItem>
+                }
+            </MudSelect>
+            <div class="d-flex align-center justify-space-between mt-6">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="@(() => Save())">Save</MudButton>
+
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" Class="ml-auto" OnClick="@(() => LogOut())">Log out</MudButton>
+            </div>
+        </MudForm>
+    </MudItem>
+</MudGrid>
+@code {
+    bool success;
+    string[] errors = { };
+    private string _username = string.Empty;
+    private string _role;
+    string username
+    {
+        get => string.IsNullOrEmpty(_username) ? _hubService.CurrentUser.Name : _username;
+        set => _username = value;
+    }
+    Role role 
+    {
+        get => string.IsNullOrEmpty(_role) ? _hubService.CurrentUser.Role : Enum.Parse<Role>(_role);
+        set => _role = value.ToString();
+    }
+    MudForm form;  
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        StateHasChanged();
+        _hubService.OnChange += StateHasChanged;
+        //_hubService.OnRoomsUpdated += RoomsUpdated;
+    }
+
+    async Task Save()
+    {
+        var user = _hubService.CurrentUser;
+        user.Name = username;
+        user.Role = role;
+        _hubService.UpdateUser(user);
+    }
+
+     async Task LogOut()
+    {
+        _hubService.Logout();
+    }
+}

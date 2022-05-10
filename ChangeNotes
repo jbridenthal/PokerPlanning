@@ -1,0 +1,4 @@
+Added save user/role to local data storage to remove need to login if already set.
+Added change user name and/or role
+Change UI to have rooms and personal user information in side drawers and buttons in the app bar.
+Backend changes in order to be able to call the connection hub from any page or component. Was all on index page.

@@ -1,0 +1,42 @@
+﻿@inject ISnackbar Snackbar
+
+
+<MudDialog>
+
+    <DialogContent>
+        <MudText>@GetChanges()</MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Error" OnClick="Cancel">Close</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    async Task<string> GetChanges()
+    {
+        try
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                var stream = await client.GetStreamAsync(new Uri("https://raw.githubusercontent.com/jbridenthal/PokerPlanning/local-data-storage/ChangeNotes"));
+                var reader = new StreamReader(stream);
+                return await reader.ReadToEndAsync();
+            }
+        } 
+        catch(Exception ex)
+        {
+            return ex.Message;
+        }
+        return "Unable to grab change notes";
+    }
+
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+
+}

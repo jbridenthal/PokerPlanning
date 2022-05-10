@@ -1,24 +1,48 @@
-﻿@inherits LayoutComponentBase
-<MudThemeProvider Theme="MyCustomTheme" />
-<MudDialogProvider />
-<MudSnackbarProvider />
-<MudLayout>
-    <MudAppBar Elevation="1">
-        <MudText Typo="Typo.h5" Class="ml-3">Planning Poker</MudText>
-        <MudSpacer />
-        @*<MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />*@
-    </MudAppBar>
-    <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
-            @Body
-        </MudContainer>
-        <footer>
-            <MudSpacer />  <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" /><MudLink Href="https://github.com/jbridenthal/PokerPlanning" Target="_blank" Color="Color.Dark">https://github.com/jbridenthal/PokerPlanning</MudLink>
-        </footer>
-    </MudMainContent>
-</MudLayout>
+﻿@inject HubService _hubService;
+@inject IDialogService _dialogService
+@inherits LayoutComponentBase
 
+<CascadingValue Value="this">
+    <MudThemeProvider Theme="MyCustomTheme" />
+    <MudDialogProvider />
+    <MudSnackbarProvider />
+    <MudLayout>
+        <MudAppBar Fixed="false" Elevation="1">
+            <MudChip Icon="@Icons.Filled.MeetingRoom" Color="Color.Tertiary" Disabled="@DisableButtons" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())">Rooms</MudChip>
+            <MudSpacer />
+            <MudText Typo="Typo.h5" Class="ml-3">Planning Poker</MudText><MudSpacer />
+            <MudChip Icon="@Icons.Filled.Person" Color="Color.Tertiary" Disabled="@DisableButtons" OnClick="@((e) => UserDrawerToggle())">@_hubService.CurrentUser?.Name</MudChip>
+        </MudAppBar>
+        <MudDrawer @bind-Open="_roomDrawerOpen" Elevation="2" ClipMode="DrawerClipMode.Always" Class="d-inline-flex">
+            <RoomsList></RoomsList>
+        </MudDrawer>
+        <MudDrawer @bind-Open="_userDrawerOpen" Elevation="2" Anchor="Anchor.End" DisableOverlay="true" ClipMode="DrawerClipMode.Always" Class="d-inline-flex">
+            <UserInformation></UserInformation>
+        </MudDrawer>
+        <MudMainContent>
+            <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
+                @Body
+            </MudContainer>
+            <footer>
+                <MudSpacer /> 
+                <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" /><MudLink Href="https://github.com/jbridenthal/PokerPlanning" Target="_blank" Color="Color.Dark">https://github.com/jbridenthal/PokerPlanning</MudLink>
+                @*<MudButton Variant="Variant.Text" OnClick="()=> ShowChangeNotes()">Change Notes</MudButton>*@
+            </footer>
+        </MudMainContent>
+
+    </MudLayout>
+
+</CascadingValue>
 @code {
+    bool _roomDrawerOpen = false;
+    bool _userDrawerOpen = false;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        _hubService.OnChange += StateHasChanged;
+    }
+
     MudTheme MyCustomTheme = new MudTheme()
         {
             Palette = new Palette()
@@ -30,4 +54,26 @@
                 Tertiary = Colors.BlueGrey.Lighten1
             }
         };
+
+
+    void DrawerToggle()
+    {
+        _roomDrawerOpen = !_roomDrawerOpen;
+    }
+    void UserDrawerToggle()
+    {
+        _userDrawerOpen = !_userDrawerOpen;
+    }
+    async Task ShowChangeNotes()
+    {
+        DialogOptions options = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
+        var dialog = _dialogService.Show<ChangeNotes>("Change Notes", options);
+    }
+
+    public void Dispose()
+    {
+        _hubService.OnChange += StateHasChanged;
+    }
+
+    private bool DisableButtons => !_hubService.IsConnected;
 }
