@@ -125,5 +125,23 @@ namespace PokerPlanning.Server.Hubs
             await SendRooms();
             await SendUsers();
         }
+
+        public async Task UpdateUser(User user)
+        {
+            Users[Context.ConnectionId].Name = user.Name;
+            Users[Context.ConnectionId].Role = user.Role;
+            await SendUsers();
+        }
+
+        public async Task Logout()
+        {
+            var user = Users.FirstOrDefault(u => u.Key == Context.ConnectionId);
+            Users.Remove(Context.ConnectionId);
+            await LeaveRoom(user.Value.Room ?? "");
+            await SendUsers();
+            await SendRooms();
+            await base.OnDisconnectedAsync(new Exception("User manually disconnected"));
+            Context.Abort();
+        }
     }
 }

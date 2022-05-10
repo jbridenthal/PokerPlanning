@@ -12,6 +12,7 @@ namespace PokerPlanning.Client.Services
         public delegate void ShowVotesUpdated(object sender);
         public delegate void ClearVotesUpdated(object sender);
         public delegate void UserIDUpdated(object sender, string id);
+        public delegate void UserLogOut(object sender);
 
         public event Action? OnChange;
         public event UserUpdated? OnUserUpdated;
@@ -20,6 +21,7 @@ namespace PokerPlanning.Client.Services
         public event ShowVotesUpdated? OnShowVotes;
         public event ClearVotesUpdated? OnClearVotes;
         public event UserIDUpdated? OnUserIDUpdated;
+        public event UserLogOut? OnUserLogOut;
 
         private void UpdateUser() => OnUserUpdated?.Invoke(this, CurrentUser);
         private void UpdateUsers() => OnUsersUpdated?.Invoke(this, Users);
@@ -27,6 +29,8 @@ namespace PokerPlanning.Client.Services
         private void UpdateShowVotes() => OnShowVotes?.Invoke(this);
         private void UpdateClearVotes() => OnClearVotes?.Invoke(this);
         private void UpdateUserID() => OnUserIDUpdated?.Invoke(this, userId);
+        private void UpdateUserLogout() => OnUserLogOut.Invoke(this);
+
         public User CurrentUser { get; set; } = new();
 
         const string LOCAL_STORAGE_NAME = "PokerPlanning.UserInfo";
@@ -146,6 +150,28 @@ namespace PokerPlanning.Client.Services
             {
                 await hubConnection.SendAsync("JoinRoom", room);
                 NotifyStateChanged();
+            }
+        }
+
+        public async Task UpdateUser(User user)
+        {
+            if (hubConnection != null)
+            {
+                await hubConnection.SendAsync("UpdateUser", user);
+                CurrentUser.Name = user.Name;
+                CurrentUser.Role = user.Role;
+                await localStorage.SetItemAsync(LOCAL_STORAGE_NAME, CurrentUser);
+                NotifyStateChanged();
+            }
+        }
+
+        public async Task Logout()
+        {
+            if (hubConnection != null)
+            {
+                await localStorage.RemoveItemAsync(LOCAL_STORAGE_NAME);
+                UpdateUserLogout();
+                await hubConnection.SendAsync("Logout");
             }
         }
 

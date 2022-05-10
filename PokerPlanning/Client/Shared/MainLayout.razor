@@ -7,16 +7,16 @@
     <MudSnackbarProvider />
     <MudLayout>
         <MudAppBar Fixed="false" Elevation="1">
-            <MudChip Icon="@Icons.Filled.MeetingRoom" Color="Color.Tertiary" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" >Rooms</MudChip>
-             <MudSpacer /> 
-             <MudText Typo="Typo.h5" Class="ml-3">Planning Poker</MudText><MudSpacer />
-             <MudChip Icon="@Icons.Filled.Person" Color="Color.Tertiary"  OnClick="@((e) => UserDrawerToggle())">@_hubService.CurrentUser?.Name</MudChip>
+            <MudChip Icon="@Icons.Filled.MeetingRoom" Color="Color.Tertiary" Disabled="@DisableButtons" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())">Rooms</MudChip>
+            <MudSpacer />
+            <MudText Typo="Typo.h5" Class="ml-3">Planning Poker</MudText><MudSpacer />
+            <MudChip Icon="@Icons.Filled.Person" Color="Color.Tertiary" Disabled="@DisableButtons" OnClick="@((e) => UserDrawerToggle())">@_hubService.CurrentUser?.Name</MudChip>
         </MudAppBar>
         <MudDrawer @bind-Open="_roomDrawerOpen" Elevation="2" ClipMode="DrawerClipMode.Always" Class="d-inline-flex">
             <RoomsList></RoomsList>
         </MudDrawer>
         <MudDrawer @bind-Open="_userDrawerOpen" Elevation="2" Anchor="Anchor.End" DisableOverlay="true" ClipMode="DrawerClipMode.Always" Class="d-inline-flex">
-                <UserInformation></UserInformation>
+            <UserInformation></UserInformation>
         </MudDrawer>
         <MudMainContent>
             <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
@@ -65,4 +65,5 @@
     {
         _hubService.OnChange += StateHasChanged;
     }
+    private bool DisableButtons => !_hubService.IsConnected;
 }

@@ -79,17 +79,17 @@ else
 
             StateHasChanged();
             _hubService.OnChange += StateHasChanged;
-            _hubService.OnUserUpdated += UserUpdated;
             _hubService.OnUsersUpdated += UsersUpdated;
             _hubService.OnShowVotes += ShowVotesUpdated;
             _hubService.OnClearVotes += ClearVotesUpdated;
             _hubService.OnUserIDUpdated += UserIDUpdated;
+            _hubService.OnUserLogOut += UserLogout;
             await Connect();
         }
     }
-    static void UserUpdated(object sender, User user)
+    async void UserLogout(object sender)
     {
-
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
     private void UserIDUpdated(object sender, string id)
