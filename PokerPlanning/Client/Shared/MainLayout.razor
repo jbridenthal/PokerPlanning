@@ -1,4 +1,5 @@
 ﻿@inject HubService _hubService;
+@inject IDialogService _dialogService
 @inherits LayoutComponentBase
 
 <CascadingValue Value="this">
@@ -23,7 +24,9 @@
                 @Body
             </MudContainer>
             <footer>
-                <MudSpacer />  <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" /><MudLink Href="https://github.com/jbridenthal/PokerPlanning" Target="_blank" Color="Color.Dark">https://github.com/jbridenthal/PokerPlanning</MudLink>
+                <MudSpacer /> 
+                <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" /><MudLink Href="https://github.com/jbridenthal/PokerPlanning" Target="_blank" Color="Color.Dark">https://github.com/jbridenthal/PokerPlanning</MudLink>
+                @*<MudButton Variant="Variant.Text" OnClick="()=> ShowChangeNotes()">Change Notes</MudButton>*@
             </footer>
         </MudMainContent>
 
@@ -61,9 +64,16 @@
     {
         _userDrawerOpen = !_userDrawerOpen;
     }
+    async Task ShowChangeNotes()
+    {
+        DialogOptions options = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
+        var dialog = _dialogService.Show<ChangeNotes>("Change Notes", options);
+    }
+
     public void Dispose()
     {
         _hubService.OnChange += StateHasChanged;
     }
+
     private bool DisableButtons => !_hubService.IsConnected;
 }

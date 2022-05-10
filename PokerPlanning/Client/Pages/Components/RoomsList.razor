@@ -1,4 +1,4 @@
-﻿@inject IDialogService DialogService
+﻿@inject IDialogService _dialogService
 @inject HubService _hubService
 
 <MudGrid Justify="Justify.Center" Class="d-inline-flex pt-2">
@@ -33,7 +33,7 @@
 
     async Task CreateRoom()
     {
-        var dialog = DialogService.Show<CreateRoomDialog>();
+        var dialog = _dialogService.Show<CreateRoomDialog>();
         var result = await dialog.Result;
 
         if (!result.Cancelled && !string.IsNullOrWhiteSpace(result.Data.ToString()))
