@@ -165,6 +165,7 @@ else
         if (Users != null && Users.ContainsKey(userId))
         {
             if (Users[userId].Role == Role.Observer || Users[userId].Role == Role.Moderator)
+
             {
                 return false;
             }
