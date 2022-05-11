@@ -12,7 +12,7 @@
             </MudSelect>
         </MudItem>
         <MudItem xs="12">
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@(()=>OnConnectCallBack.InvokeAsync())" Disabled="IsConnectDisabled">Connect</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@(()=>OnConnectCallBack.InvokeAsync())" Disabled="IsConnectDisabled"><MudText>Connect</MudText></MudButton>
         </MudItem>
     </MudGrid>
 </div>

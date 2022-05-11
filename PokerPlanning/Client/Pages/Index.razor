@@ -3,7 +3,7 @@
 @inject IJSRuntime JSRuntime;
 @inject ISnackbar Snackbar
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
-@inject HubService _hubService
+@inject IHubService _hubService
 @implements IAsyncDisposable
 
 
@@ -38,13 +38,13 @@ else
             </MudGrid>
             <MudGrid>
                 <MudItem xs="9">
-                    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" FullWidth="true" EndIcon="@Icons.Filled.Person" OnClick="()=> showVotes = true" Disabled="@PersonalShowDisabled()"> Show votes for only me </MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" FullWidth="true" EndIcon="@Icons.Filled.Person" OnClick="()=> showVotes = true" Disabled="@PersonalShowDisabled()"> <MudText>Show votes for only me</MudText> </MudButton>
                 </MudItem>
                 <MudItem xs="9">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" EndIcon="@Icons.Filled.People" OnClick="()=> HandleShowVotes()" Disabled="@ModeratorOnly()"> Show votes for everyone</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" EndIcon="@Icons.Filled.People" OnClick="()=> HandleShowVotes()" Disabled="@ModeratorOnly()"> <MudText>Show votes for everyone</MudText></MudButton>
                 </MudItem>
                 <MudItem xs="9">
-                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true" OnClick="()=> HandleClearVotes()" Disabled="@ModeratorOnly()"> Clear votes for everyone</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true" OnClick="()=> HandleClearVotes()" Disabled="@ModeratorOnly()"> <MudText>Clear votes for everyone</MudText></MudButton>
                 </MudItem>
             </MudGrid>
             @if (ModeratorOnly())

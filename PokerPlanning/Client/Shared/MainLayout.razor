@@ -1,4 +1,4 @@
-﻿@inject HubService _hubService;
+﻿@inject IHubService _hubService;
 @inject IDialogService _dialogService
 @inherits LayoutComponentBase
 
@@ -8,7 +8,7 @@
     <MudSnackbarProvider />
     <MudLayout>
         <MudAppBar Fixed="false" Elevation="1">
-            <MudChip Icon="@Icons.Filled.MeetingRoom"  Size="Size.Large" Color="Color.Tertiary" Disabled="@DisableButtons" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())">Rooms</MudChip>
+            <MudChip Icon="@Icons.Filled.MeetingRoom" Size="Size.Large" Color="Color.Tertiary" Disabled="@DisableButtons" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())">Rooms</MudChip>
             <MudSpacer />
             <MudText Typo="Typo.h5" Class="ml-3">Planning Poker</MudText><MudSpacer />
             <MudChip CloseIcon="@Icons.Filled.Person" OnClose="Closed" Size="Size.Large" Color="Color.Tertiary" Disabled="@DisableButtons" OnClick="@((e) => UserDrawerToggle())">@_hubService.CurrentUser?.Name</MudChip>
@@ -20,7 +20,7 @@
             <UserInformation></UserInformation>
         </MudDrawer>
         <MudMainContent>
-            <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" >
+            <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
                 @Body
             </MudContainer>
             <footer>
@@ -51,6 +51,14 @@
                 AppbarBackground = Colors.BlueGrey.Lighten1,
                 AppbarText = Colors.Grey.Darken3,
                 Tertiary = Colors.BlueGrey.Lighten1
+            },
+
+            Typography = new Typography()
+            {
+                Default = new Default()
+                {
+                    FontFamily = new[] { "Poppins", "Helvetica", "Arial", "sans-serif" }
+                }
             }
         };
 

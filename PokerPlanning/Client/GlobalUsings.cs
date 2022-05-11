@@ -8,3 +8,5 @@ global using PokerPlanning.Client;
 global using PokerPlanning.Shared;
 global using Microsoft.AspNetCore.SignalR.Client;
 global using Microsoft.AspNetCore.Components;
+global using static PokerPlanning.Shared.Enums;
+global using PokerPlanning.Client.Services.Interfaces;

@@ -1,10 +1,6 @@
-﻿
-using static PokerPlanning.Shared.Enums;
-
-namespace PokerPlanning.Client.Services
+﻿namespace PokerPlanning.Client.Services
 {
-
-    public class HubService
+    public class HubService : IHubService
     {
         public delegate void UserUpdated(object sender, User user);
         public delegate void UsersUpdated(object sender, Dictionary<string, User> users);

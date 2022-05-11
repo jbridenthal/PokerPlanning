@@ -1,9 +1,9 @@
 ﻿@inject IDialogService _dialogService
-@inject HubService _hubService
+@inject IHubService _hubService
 
 <MudGrid Justify="Justify.Center" Class="d-inline-flex pt-2">
     <MudItem xs="10">
-        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" EndIcon="@Icons.Filled.AddCircle" FullWidth="true" OnClick="@(() => CreateRoom())">Create Room</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" EndIcon="@Icons.Filled.AddCircle" FullWidth="true" OnClick="@(() => CreateRoom())"><MudText> Create Room</MudText></MudButton>
     </MudItem>
     @foreach (var room in Rooms.Keys)
     {
@@ -11,7 +11,7 @@
             @*MudBadge has bug stopping button from being full width*@
             @*<MudBadge Style="display:inherit" Content="@Rooms[room].Count()" Color="Color.Info" FullWidth="true" Overlap="true" Bordered="true">*@
             <MudButton  Class="d-inline-flex" Variant="@GetConnectedRoomVariant(room)" Color="Color.Primary" FullWidth="true" OnClick="@(() => JoinRoom(room))">
-                @GetRoomButtonTitle(room)
+               <MudText>@GetRoomButtonTitle(room)</MudText> 
             </MudButton>
             @* </MudBadge>*@
         </MudItem>
