@@ -6,7 +6,7 @@ on:
     branches: [ master ]
     
 jobs:
-  deploy-to-github-pages:
+  build:
     runs-on: ubuntu-latest
     steps:
     
@@ -23,8 +23,18 @@ jobs:
       run: dotnet publish PokerPlanning.sln -c Release -o release --nologo
     
     
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v1
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write 
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
 
 
