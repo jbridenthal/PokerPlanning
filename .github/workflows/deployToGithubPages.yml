@@ -23,24 +23,10 @@ jobs:
     - name: Publish .NET Core Project
       run: dotnet publish PokerPlanning.csproj -c Release -o release --nologo
     
-    - name: Commit wwwroot to GitHub Pages
-      uses: github-pages-deploy-action@3.7.1
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: gh-pages
-        FOLDER: release/wwwroot
     
-    # sets up .NET Core SDK 6
-    #- name: Setup .NET Core SDK
-    #  uses: actions/setup-dotnet@v1
-    #  with:
-    #    dotnet-version: 6.0
-    # publishes Blazor project to the release-folder
-    #- name: Publish .NET Core Project
-    #  run: dotnet publish PokerPlanning.csproj -c Release -o release --nologo
-    #- name: Commit wwwroot to GitHub Pages
-    #  uses: github-pages-deploy-action@3.7.1
-    #  with:
-    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #    BRANCH: gh-pages
-    #    FOLDER: release/wwwroot
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v1
+      with:
+        FOLDER: release/wwwroot
+
