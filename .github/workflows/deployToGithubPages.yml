@@ -20,7 +20,7 @@ jobs:
         include-prerelease: false
     
     - name: Publish .NET Core Project
-      run: dotnet publish PokerPlanning.csproj -c Release -o release --nologo
+      run: dotnet publish PokerPlanning.Server.csproj -c Release -o release --nologo
     
     
     - name: Deploy to GitHub Pages
