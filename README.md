@@ -3,9 +3,6 @@ Poker planning tool using .Net Core, C#, Blazor, SingalR and MudBlazor https://m
 
 ![Build](https://github.com/jbridenthal/PokerPlanning/actions/workflows/docker-image.yml/badge.svg)
 
-## Example
-http://pokerplanning.lkmrtools.com:34000
-
 ## Deployment
 Use docker-compose.example.yml to deploy to a server using docker image.
 
