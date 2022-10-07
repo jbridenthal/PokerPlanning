@@ -10,9 +10,16 @@
     </MudListSubheader>
     @foreach (Role item in Enum.GetValues(typeof(Role)))
     {
-        <MudListItem Icon="@Icons.Filled.PersonOutline" Text="@item.ToString()" InitiallyExpanded="true">
+        @{
+            List<User> usersForRole = Users.Values.Where(x => x.Role == item).Where(u => u.Room == Room).ToList();
+            double average = usersForRole.Average(x => x.Vote);
+            string itemText = ShowVotes && average > 0 //skip showing a 0 (no votes)
+                ? $"{item} - {average:0.##}"
+                : item.ToString();
+        }
+        <MudListItem Icon="@Icons.Filled.PersonOutline" Text="@itemText" InitiallyExpanded="true">
             <NestedList>
-                @foreach (User user in Users.Values.Where(x => x.Role == item).Where(u => u.Room == Room))
+                @foreach (User user in usersForRole)
                 {
                     <MudListItem>
                         <MudGrid>
@@ -53,7 +60,7 @@
     public Dictionary<string, User> Users { get; set; } = new Dictionary<string, User>();
 
     [Parameter]
-    public bool ShowVotes { get; set; }  
+    public bool ShowVotes { get; set; }
 
     [Parameter]
     public string Room { get; set; }
