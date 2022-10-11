@@ -10,13 +10,12 @@
     </MudListSubheader>
     @foreach (Role item in Enum.GetValues(typeof(Role)))
     {
-        @{
-            List<User> usersForRole = Users.Values.Where(x => x.Role == item).Where(u => u.Room == Room).ToList();
-            double average = usersForRole.Average(x => x.Vote);
-            string itemText = ShowVotes && average > 0 //skip showing a 0 (no votes)
-                ? $"{item} - {average:0.##}"
-                : item.ToString();
-        }
+        List<User> usersForRole = Users.Values.Where(x => x.Role == item).Where(u => u.Room == Room).ToList();
+        double average = usersForRole.Average(x => x.Vote.SafeParseInt32());
+        string itemText = ShowVotes && average > 0 //skip showing a 0 (no votes)
+            ? $"{item} - {average:0.##}"
+            : item.ToString();
+
         <MudListItem Icon="@Icons.Filled.PersonOutline" Text="@itemText" InitiallyExpanded="true">
             <NestedList>
                 @foreach (User user in usersForRole)
