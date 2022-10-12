@@ -10,15 +10,18 @@
     </MudListSubheader>
     @foreach (Role item in Enum.GetValues(typeof(Role)))
     {
-        List<User> usersForRole = Users.Values.Where(x => x.Role == item).Where(u => u.Room == Room).ToList();
-        double average = usersForRole.Average(x => x.Vote.SafeParseInt32());
-        string itemText = ShowVotes && average > 0 //skip showing a 0 (no votes)
-            ? $"{item} - {average:0.##}"
-            : item.ToString();
-
-        <MudListItem Icon="@Icons.Filled.PersonOutline" Text="@itemText" InitiallyExpanded="true">
+        <MudListItem Icon="@Icons.Filled.PersonOutline" Text="@item.ToString()" InitiallyExpanded="true">
             <NestedList>
-                @foreach (User user in usersForRole)
+                @if ((item == Role.Dev || item == Role.QA) && ShowVotes)
+                {
+                    <MudListItem class="average">
+                        <MudGrid>
+                                <MudItem xs="3"> Average</MudItem>
+                                <MudItem xs="3">@average(item)</MudItem>
+                        </MudGrid>
+                    </MudListItem>
+                }
+                @foreach (User user in Users.Values.Where(x => x.Role == item).Where(u => u.Room == Room))
                 {
                     <MudListItem>
                         <MudGrid>
@@ -46,13 +49,19 @@
                             </MudItem>
                         </MudGrid>
                     </MudListItem>
-                     <MudDivider />
+                    <MudDivider />
                 }
             </NestedList>
         </MudListItem>
     }
 </MudList>
-
+<style>
+    .average {
+        background-color: @Colors.Green.Lighten3;
+        color: @Colors.Grey.Darken4;
+        font-weight: 900;
+    }
+</style>
 
 @code {
     [Parameter]
@@ -64,4 +73,14 @@
     [Parameter]
     public string Room { get; set; }
 
+    private double average(Role role) {
+        List<User> usersForRole = Users.Values.Where(x => x.Role == role).Where(u => u.Room == Room).Where(v=>v.Vote != null).ToList();
+        if(!usersForRole.Any()) {
+            return 0;
+        }
+        double average = usersForRole.Average(x => x.Vote.SafeParseInt32());
+        Console.WriteLine(role.ToString());
+        Console.WriteLine(average);
+        return average != null ? average : 0;
+    }
 }
