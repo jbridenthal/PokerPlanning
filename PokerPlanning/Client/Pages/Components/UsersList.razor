@@ -12,6 +12,15 @@
     {
         <MudListItem Icon="@Icons.Filled.PersonOutline" Text="@item.ToString()" InitiallyExpanded="true">
             <NestedList>
+                @if ((item == Role.Dev || item == Role.QA) && ShowVotes)
+                {
+                    <MudListItem class="average">
+                        <MudGrid>
+                                <MudItem xs="3"> Average</MudItem>
+                                <MudItem xs="3">@average(item)</MudItem>
+                        </MudGrid>
+                    </MudListItem>
+                }
                 @foreach (User user in Users.Values.Where(x => x.Role == item).Where(u => u.Room == Room))
                 {
                     <MudListItem>
@@ -40,22 +49,38 @@
                             </MudItem>
                         </MudGrid>
                     </MudListItem>
-                     <MudDivider />
+                    <MudDivider />
                 }
             </NestedList>
         </MudListItem>
     }
 </MudList>
-
+<style>
+    .average {
+        background-color: @Colors.Green.Lighten3;
+        color: @Colors.Grey.Darken4;
+        font-weight: 900;
+    }
+</style>
 
 @code {
     [Parameter]
     public Dictionary<string, User> Users { get; set; } = new Dictionary<string, User>();
 
     [Parameter]
-    public bool ShowVotes { get; set; }  
+    public bool ShowVotes { get; set; }
 
     [Parameter]
     public string Room { get; set; }
 
+    private double average(Role role) {
+        List<User> usersForRole = Users.Values.Where(x => x.Role == role).Where(u => u.Room == Room).Where(v=>v.Vote != null).ToList();
+        if(!usersForRole.Any()) {
+            return 0;
+        }
+        double average = usersForRole.Average(x => x.Vote.SafeParseInt32());
+        Console.WriteLine(role.ToString());
+        Console.WriteLine(average);
+        return average != null ? average : 0;
+    }
 }
