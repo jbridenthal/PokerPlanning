@@ -78,9 +78,7 @@
         if(!usersForRole.Any()) {
             return 0;
         }
-        double average = usersForRole.Average(x => x.Vote.SafeParseInt32());
-        Console.WriteLine(role.ToString());
-        Console.WriteLine(average);
+            double average = usersForRole.Where(x => x.Vote.IsNumeric() == true).Average(a=> a.Vote.SafeParseInt32());
         return average != null ? average : 0;
     }
 }
