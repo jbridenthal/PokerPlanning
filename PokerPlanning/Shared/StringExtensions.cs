@@ -12,7 +12,7 @@ namespace PokerPlanning.Shared
         }
         public static bool IsNumeric(this string toParse)
         {
-            return int.TryParse(toParse, out _);
+            return Double.TryParse(toParse, out _);
         }
     }
 }

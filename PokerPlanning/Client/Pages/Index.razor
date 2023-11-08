@@ -39,9 +39,9 @@ else
                  <MudItem xs="3">
                     <MudButton Disabled="GetVoteDisable()" Variant="GetVoteColor(TBD)" Color="Color.Primary" Size="Size.Large" OnClick="() => HandleVoting(TBD)"> TBD </MudButton>
                 </MudItem>
-                <MudItem xs="6">
-                    <MudNumericField Disabled="GetVoteDisable()" HideSpinButtons="true" Label="Custom" @bind-Value="customVote" Variant="GetVoteColor(customVote.ToString())" Clearable />
-                    <MudButton Disabled="GetVoteDisable()" Variant="GetVoteColor(customVote.ToString())" OnClick="() => HandleVoting(currentUser.ToString())">Custom Vote</MudButton>
+                <MudItem xs="6" Class="flex-grow-1 align-center">
+                    <MudNumericField Disabled="GetVoteDisable()" Class="d-inline-flex" HideSpinButtons="true" Label="Custom" @bind-Value="customVote" Variant="GetVoteColor(customVote.ToString())" Clearable />
+                    <MudButton Disabled="GetVoteDisable()" Class="d-inline-flex" Color="Color.Primary" Size="Size.Large" Variant="GetVoteColor(customVote.ToString())" OnClick="() => HandleVoting(customVote.ToString())">Custom Vote</MudButton>
                 </MudItem>
             </MudGrid>
             <MudGrid>
@@ -87,7 +87,7 @@ else
         _hubService.OnClearVotes += ClearVotesUpdated;
         _hubService.OnUserIDUpdated += UserIDUpdated;
         _hubService.OnUserLogOut += UserLogout;
-                    
+
         currentUser = await localStorage.GetItemAsync<User>(LOCAL_STORAGE_NAME);
         if (currentUser != null && !string.IsNullOrWhiteSpace(currentUser.Name))
         {
@@ -129,11 +129,16 @@ else
 
     private async Task HandleVoting(string vote)
     {
+        if(customVote.ToString() != vote)
+        {
+            customVote = 0;
+        }
         await _hubService.SendVote(vote);
     }
 
     private async Task HandleClearVotes()
     {
+        customVote = 0;
         await _hubService.ClearVotes();
         showVotes = false;
     }
@@ -151,6 +156,10 @@ else
     private Variant GetVoteColor(string vote)
     {
         var user = Users.Values.Where(x => x.Name != null && x.Name.Equals(userName)).FirstOrDefault();
+        if(customVote.ToString() == vote && customVote > 0)
+        {
+            return Variant.Filled;
+        }
         return user != null && user.Vote != null && user.Vote.Equals(vote) ? Variant.Filled : Variant.Outlined;
     }
 
