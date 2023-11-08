@@ -42,8 +42,7 @@
                                     }
                                     else
                                     {
-                                        @user.Vote
-                                        ;
+                                        @user.Vote;
                                     }
                                 }
                             </MudItem>
@@ -78,7 +77,7 @@
         if(!usersForRole.Any()) {
             return 0;
         }
-            double average = usersForRole.Where(x => x.Vote.IsNumeric() == true).Average(a=> a.Vote.SafeParseInt32());
+            double average = usersForRole.Where(x => x.Vote.IsNumeric() == true).Average(a=> a.Vote.SafeParseDouble());
         return average != null ? average : 0;
     }
 }

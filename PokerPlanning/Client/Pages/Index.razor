@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using System.Globalization;
 @inject NavigationManager NavigationManager;
 @inject IJSRuntime JSRuntime;
 @inject ISnackbar Snackbar
@@ -38,13 +39,17 @@ else
                  <MudItem xs="3">
                     <MudButton Disabled="GetVoteDisable()" Variant="GetVoteColor(TBD)" Color="Color.Primary" Size="Size.Large" OnClick="() => HandleVoting(TBD)"> TBD </MudButton>
                 </MudItem>
+                <MudItem xs="6" Class="flex-grow-1 align-center">
+                    <MudNumericField Disabled="GetVoteDisable()" Class="d-inline-flex" HideSpinButtons="true" Label="Custom" @bind-Value="customVote" Variant="GetVoteColor(customVote.ToString())" Clearable />
+                    <MudButton Disabled="GetVoteDisable()" Class="d-inline-flex" Color="Color.Primary" Size="Size.Large" Variant="GetVoteColor(customVote.ToString())" OnClick="() => HandleVoting(customVote.ToString())">Custom Vote</MudButton>
+                </MudItem>
             </MudGrid>
             <MudGrid>
                 <MudItem xs="9">
-                    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" FullWidth="true" EndIcon="@Icons.Filled.Person" OnClick="()=> showVotes = true" Disabled="@PersonalShowDisabled()"> <MudText>Show votes for only me</MudText> </MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" FullWidth="true" EndIcon="@Icons.Material.Filled.Person" OnClick="()=> showVotes = true" Disabled="@PersonalShowDisabled()"> <MudText>Show votes for only me</MudText> </MudButton>
                 </MudItem>
                 <MudItem xs="9">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" EndIcon="@Icons.Filled.People" OnClick="()=> HandleShowVotes()" Disabled="@ModeratorOnly()"> <MudText>Show votes for everyone</MudText></MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" EndIcon="@Icons.Material.Filled.People" OnClick="()=> HandleShowVotes()" Disabled="@ModeratorOnly()"> <MudText>Show votes for everyone</MudText></MudButton>
                 </MudItem>
                 <MudItem xs="9">
                     <MudButton Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true" OnClick="()=> HandleClearVotes()" Disabled="@ModeratorOnly()"> <MudText>Clear votes for everyone</MudText></MudButton>
@@ -63,6 +68,7 @@ else
 
 @code {
     const string LOCAL_STORAGE_NAME = "PokerPlanning.UserInfo";
+    private decimal customVote { get; set; }
     private string userName { get; set; } = string.Empty;
     private string userId = string.Empty;
     private int[] sizeValues = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
@@ -72,7 +78,7 @@ else
     private static Dictionary<string, List<string>> Rooms = new Dictionary<string, List<string>>();
     private User currentUser = new();
     private string TBD = "TBD";
-
+    public IMask mask1 = new RegexMask(@"^(?=.)\d*(\.\d+)?$");
     protected override async Task OnInitializedAsync()
     {
         _hubService.OnChange += StateHasChanged;
@@ -81,7 +87,7 @@ else
         _hubService.OnClearVotes += ClearVotesUpdated;
         _hubService.OnUserIDUpdated += UserIDUpdated;
         _hubService.OnUserLogOut += UserLogout;
-                    
+
         currentUser = await localStorage.GetItemAsync<User>(LOCAL_STORAGE_NAME);
         if (currentUser != null && !string.IsNullOrWhiteSpace(currentUser.Name))
         {
@@ -123,11 +129,16 @@ else
 
     private async Task HandleVoting(string vote)
     {
+        if(customVote.ToString() != vote)
+        {
+            customVote = 0;
+        }
         await _hubService.SendVote(vote);
     }
 
     private async Task HandleClearVotes()
     {
+        customVote = 0;
         await _hubService.ClearVotes();
         showVotes = false;
     }
@@ -145,6 +156,10 @@ else
     private Variant GetVoteColor(string vote)
     {
         var user = Users.Values.Where(x => x.Name != null && x.Name.Equals(userName)).FirstOrDefault();
+        if(customVote.ToString() == vote && customVote > 0)
+        {
+            return Variant.Filled;
+        }
         return user != null && user.Vote != null && user.Vote.Equals(vote) ? Variant.Filled : Variant.Outlined;
     }
 

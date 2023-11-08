@@ -6,10 +6,13 @@ namespace PokerPlanning.Shared
         {
             return int.TryParse(toParse, out var result) ? result : 0;
         }
-
+        public static double SafeParseDouble(this string toParse)
+        {
+            return Double.TryParse(toParse, out var result) ? result : 0.00;
+        }
         public static bool IsNumeric(this string toParse)
         {
-            return int.TryParse(toParse, out _);
+            return Double.TryParse(toParse, out _);
         }
     }
 }
