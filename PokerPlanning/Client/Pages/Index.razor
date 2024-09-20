@@ -23,8 +23,8 @@
 else
 {
     <MudGrid  Class="d-flex justify-center flex-grow-1 gap-4">
-        @*<MudItem xl="2"> <RoomsList Rooms=@Rooms OnJoinRoomClick="@HandleJoinRoomClick" CurrentRoom="@GetConnectedRoom()"></RoomsList></MudItem>*@
         <MudItem xl="4">
+            <MudContainer MaxWidth="MaxWidth.Medium">
             <MudText Typo="Typo.h4">Voting</MudText>
             <MudGrid>
                 @foreach (var size in sizeValues)
@@ -59,6 +59,7 @@ else
             {
                 <MudText Color="Color.Error">Only moderators can show or clear votes for everyone at this time</MudText>
             }
+            </MudContainer>
         </MudItem>
         <MudItem xl="4">
             <UsersList Users=@Users ShowVotes="@showVotes" Room="@GetConnectedRoom()"></UsersList>
