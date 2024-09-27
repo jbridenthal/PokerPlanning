@@ -1,0 +1,34 @@
+﻿@page "/Rooms"
+@inject IDialogService DialogService
+
+<h3>Rooms</h3>
+
+<MudButtonGroup Color="Color.Primary" Variant="Variant.Filled" OverrideStyles="false">
+    <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" IconColor="Color.Surface" Color="Color.Tertiary" OnClick="OpenRoomAddDialog">Add room</MudButton>
+    <MudButton StartIcon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" IconColor="Color.Surface" Color="Color.Error">Delete room</MudButton>
+</MudButtonGroup>
+
+<MudDataGrid Items="@rooms" Filterable="false" SortMode="@SortMode.None" Groupable="false">
+
+    <Columns>
+        <PropertyColumn Property="x => x.Id" />
+        <PropertyColumn Property="x => x.Name" />
+        <TemplateColumn CellClass="d-flex justify-end">
+            <CellTemplate>
+                <MudStack Row>
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" />
+                </MudStack>
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+</MudDataGrid>
+
+@code {
+ public List<RoomModel> rooms = new List<RoomModel>();
+    private Task OpenRoomAddDialog()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+
+        return DialogService.ShowAsync<AddEditRoom>();
+    }
+}

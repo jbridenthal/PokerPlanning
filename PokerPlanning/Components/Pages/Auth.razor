@@ -1,0 +1,39 @@
+﻿@page "/auth"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using PokerPlanning.Data
+@using PokerPlanning.Services
+@inject AuthenticationStateProvider GetAuthenticationStateAsync
+@inject UserService UserService
+
+@attribute [Authorize]
+
+<PageTitle>Auth</PageTitle>
+
+<h1>You are authenticated</h1>
+
+<AuthorizeView>
+    Hello @user.FirstName!
+</AuthorizeView>
+
+@code {
+    private ApplicationUser user = default!;
+    private string? username;
+    private string? phoneNumber;
+    public string? FirstName;
+    private string? LastName;
+
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if(HttpContext.User.Identity?.IsAuthenticated == true)
+        {
+            user = await UserService.GetUser() ?? default!;
+            
+        }
+    }
+}

@@ -1,0 +1,56 @@
+﻿@using Microsoft.EntityFrameworkCore
+@inject ISnackbar Snackbar
+
+<MudDialog>
+      <DialogContent>
+        <MudForm Model="@room" @ref="@form" Validation="@(roomValidator.ValidateValue)" ValidationDelay="0">
+        <MudPaper Class="pa-4">
+            <MudForm >
+                <MudTextField T="string" @bind-Value="room.Name" Label="Room Name" Required="true" RequiredError="Room name is required!"/>
+            </MudForm>
+        </MudPaper>
+
+        </MudForm>
+          </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+@code {
+    [CascadingParameter]
+    private MudDialogInstance MudDialog { get; set; }
+
+    [CascadingParameter] 
+    public RoomModel? room {get; set;}
+
+    MudForm form;
+    RoomModelValidator roomValidator = new RoomModelValidator();
+    private async Task  Submit() {
+        await form.Validate();
+
+        if (form.IsValid)
+        {
+            //save here
+            using var db = new DatabaseContext();
+            db.Rooms.Add(room);
+            await db.SaveChangesAsync();
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+    }
+
+    private void Cancel() => MudDialog.Cancel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if(room == null)
+        {
+            room = new RoomModel()
+                {
+                    Name = string.Empty
+                };
+        }
+    }
+}
