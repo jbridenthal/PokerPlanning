@@ -1,8 +1,0 @@
-version: '3.1'
-services:
-  pokerplanning:
-    image: ghcr.io/jbridenthal/pokerplanning:master
-    container_name: pokerplanningserver
-    ports:
-      - "80:80"
-      - "443:443"
