@@ -1,0 +1,114 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "PokerPlanning.Services/1.0.0": {
+        "dependencies": {
+          "PokerPlanning.Data": "1.0.0",
+          "PokerPlanning.Models": "1.0.0",
+          "PokerPlanning.Shared": "1.0.0"
+        },
+        "runtime": {
+          "PokerPlanning.Services.dll": {}
+        }
+      },
+      "JsonFlatFileDataStore/2.4.2": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "Newtonsoft.Json": "13.0.2"
+        },
+        "runtime": {
+          "lib/netstandard2.0/JsonFlatFileDataStore.dll": {
+            "assemblyVersion": "2.4.2.0",
+            "fileVersion": "2.4.2.0"
+          }
+        }
+      },
+      "Microsoft.CSharp/4.7.0": {},
+      "Newtonsoft.Json/13.0.2": {
+        "runtime": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "13.0.0.0",
+            "fileVersion": "13.0.2.27524"
+          }
+        }
+      },
+      "PokerPlanning.Data/1.0.0": {
+        "dependencies": {
+          "JsonFlatFileDataStore": "2.4.2",
+          "PokerPlanning.Models": "1.0.0",
+          "PokerPlanning.Shared": "1.0.0"
+        },
+        "runtime": {
+          "PokerPlanning.Data.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "PokerPlanning.Models/1.0.0": {
+        "runtime": {
+          "PokerPlanning.Models.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "PokerPlanning.Shared/1.0.0": {
+        "runtime": {
+          "PokerPlanning.Shared.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "PokerPlanning.Services/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "JsonFlatFileDataStore/2.4.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ZIKZnikOkgQZoFSg1cPK0sOA3M00rZG9vgWDhxN0SOxYI86emcIbS1YezcyqtFM+hvh8YgDidrcpEO8/PAU9Dg==",
+      "path": "jsonflatfiledatastore/2.4.2",
+      "hashPath": "jsonflatfiledatastore.2.4.2.nupkg.sha512"
+    },
+    "Microsoft.CSharp/4.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-pTj+D3uJWyN3My70i2Hqo+OXixq3Os2D1nJ2x92FFo6sk8fYS1m1WLNTs0Dc1uPaViH0YvEEwvzddQ7y4rhXmA==",
+      "path": "microsoft.csharp/4.7.0",
+      "hashPath": "microsoft.csharp.4.7.0.nupkg.sha512"
+    },
+    "Newtonsoft.Json/13.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-R2pZ3B0UjeyHShm9vG+Tu0EBb2lC8b0dFzV9gVn50ofHXh9Smjk6kTn7A/FdAsC8B5cKib1OnGYOXxRBz5XQDg==",
+      "path": "newtonsoft.json/13.0.2",
+      "hashPath": "newtonsoft.json.13.0.2.nupkg.sha512"
+    },
+    "PokerPlanning.Data/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "PokerPlanning.Models/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "PokerPlanning.Shared/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

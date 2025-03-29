@@ -1,7 +1,68 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\james\\source\\repos\\PokerPlanning\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{FDEDB0D0-A47C-46AC-B92A-FD6687CAA27A}|PokerPlanning\\PokerPlanning.csproj|c:\\users\\james\\source\\repos\\pokerplanning\\pokerplanning\\components\\pages\\rooms.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FDEDB0D0-A47C-46AC-B92A-FD6687CAA27A}|PokerPlanning\\PokerPlanning.csproj|solutionrelative:pokerplanning\\components\\pages\\rooms.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FDEDB0D0-A47C-46AC-B92A-FD6687CAA27A}|PokerPlanning\\PokerPlanning.csproj|c:\\users\\james\\source\\repos\\pokerplanning\\pokerplanning\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FDEDB0D0-A47C-46AC-B92A-FD6687CAA27A}|PokerPlanning\\PokerPlanning.csproj|solutionrelative:pokerplanning\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FDEDB0D0-A47C-46AC-B92A-FD6687CAA27A}|PokerPlanning\\PokerPlanning.csproj|c:\\users\\james\\source\\repos\\pokerplanning\\pokerplanning\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FDEDB0D0-A47C-46AC-B92A-FD6687CAA27A}|PokerPlanning\\PokerPlanning.csproj|solutionrelative:pokerplanning\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{129405DB-5F31-4C46-A53F-1FCF8F1763B7}|PokerPlanning.Data\\PokerPlanning.Data.csproj|c:\\users\\james\\source\\repos\\pokerplanning\\pokerplanning.data\\teamrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{129405DB-5F31-4C46-A53F-1FCF8F1763B7}|PokerPlanning.Data\\PokerPlanning.Data.csproj|solutionrelative:pokerplanning.data\\teamrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1C2CF23F-F950-48FF-A156-E620F881F910}|PokerPlanning.Services\\PokerPlanning.Services.csproj|c:\\users\\james\\source\\repos\\pokerplanning\\pokerplanning.services\\teamservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1C2CF23F-F950-48FF-A156-E620F881F910}|PokerPlanning.Services\\PokerPlanning.Services.csproj|solutionrelative:pokerplanning.services\\teamservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FDEDB0D0-A47C-46AC-B92A-FD6687CAA27A}|PokerPlanning\\PokerPlanning.csproj|c:\\users\\james\\source\\repos\\pokerplanning\\pokerplanning\\components\\pages\\teams\\teams.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FDEDB0D0-A47C-46AC-B92A-FD6687CAA27A}|PokerPlanning\\PokerPlanning.csproj|solutionrelative:pokerplanning\\components\\pages\\teams\\teams.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FDEDB0D0-A47C-46AC-B92A-FD6687CAA27A}|PokerPlanning\\PokerPlanning.csproj|c:\\users\\james\\source\\repos\\pokerplanning\\pokerplanning\\components\\pages\\teams\\teamsaddedit.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FDEDB0D0-A47C-46AC-B92A-FD6687CAA27A}|PokerPlanning\\PokerPlanning.csproj|solutionrelative:pokerplanning\\components\\pages\\teams\\teamsaddedit.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FDEDB0D0-A47C-46AC-B92A-FD6687CAA27A}|PokerPlanning\\PokerPlanning.csproj|c:\\users\\james\\source\\repos\\pokerplanning\\pokerplanning\\components\\pages\\shared\\confirmcanceldialog.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FDEDB0D0-A47C-46AC-B92A-FD6687CAA27A}|PokerPlanning\\PokerPlanning.csproj|solutionrelative:pokerplanning\\components\\pages\\shared\\confirmcanceldialog.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FDEDB0D0-A47C-46AC-B92A-FD6687CAA27A}|PokerPlanning\\PokerPlanning.csproj|c:\\users\\james\\source\\repos\\pokerplanning\\pokerplanning\\components\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FDEDB0D0-A47C-46AC-B92A-FD6687CAA27A}|PokerPlanning\\PokerPlanning.csproj|solutionrelative:pokerplanning\\components\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{129405DB-5F31-4C46-A53F-1FCF8F1763B7}|PokerPlanning.Data\\PokerPlanning.Data.csproj|c:\\users\\james\\source\\repos\\pokerplanning\\pokerplanning.data\\baserepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{129405DB-5F31-4C46-A53F-1FCF8F1763B7}|PokerPlanning.Data\\PokerPlanning.Data.csproj|solutionrelative:pokerplanning.data\\baserepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D5EF840C-CA46-4577-A772-B1495B6800B1}|PokerPlanning.Models\\PokerPlanning.Models.csproj|c:\\users\\james\\source\\repos\\pokerplanning\\pokerplanning.models\\team.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D5EF840C-CA46-4577-A772-B1495B6800B1}|PokerPlanning.Models\\PokerPlanning.Models.csproj|solutionrelative:pokerplanning.models\\team.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FDEDB0D0-A47C-46AC-B92A-FD6687CAA27A}|PokerPlanning\\PokerPlanning.csproj|c:\\users\\james\\source\\repos\\pokerplanning\\pokerplanning\\global.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FDEDB0D0-A47C-46AC-B92A-FD6687CAA27A}|PokerPlanning\\PokerPlanning.csproj|solutionrelative:pokerplanning\\global.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FDEDB0D0-A47C-46AC-B92A-FD6687CAA27A}|PokerPlanning\\PokerPlanning.csproj|c:\\users\\james\\source\\repos\\pokerplanning\\pokerplanning\\components\\pages\\counter.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FDEDB0D0-A47C-46AC-B92A-FD6687CAA27A}|PokerPlanning\\PokerPlanning.csproj|solutionrelative:pokerplanning\\components\\pages\\counter.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FDEDB0D0-A47C-46AC-B92A-FD6687CAA27A}|PokerPlanning\\PokerPlanning.csproj|c:\\users\\james\\source\\repos\\pokerplanning\\pokerplanning\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FDEDB0D0-A47C-46AC-B92A-FD6687CAA27A}|PokerPlanning\\PokerPlanning.csproj|solutionrelative:pokerplanning\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D5EF840C-CA46-4577-A772-B1495B6800B1}|PokerPlanning.Models\\PokerPlanning.Models.csproj|c:\\users\\james\\source\\repos\\pokerplanning\\pokerplanning.models\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D5EF840C-CA46-4577-A772-B1495B6800B1}|PokerPlanning.Models\\PokerPlanning.Models.csproj|solutionrelative:pokerplanning.models\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +70,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 14,
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,6 +91,201 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ConfirmCancelDialog.razor",
+              "DocumentMoniker": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning\\Components\\Pages\\Shared\\ConfirmCancelDialog.razor",
+              "RelativeDocumentMoniker": "PokerPlanning\\Components\\Pages\\Shared\\ConfirmCancelDialog.razor",
+              "ToolTip": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning\\Components\\Pages\\Shared\\ConfirmCancelDialog.razor",
+              "RelativeToolTip": "PokerPlanning\\Components\\Pages\\Shared\\ConfirmCancelDialog.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-28T10:45:08.876Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MainLayout.razor",
+              "DocumentMoniker": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning\\Components\\Layout\\MainLayout.razor",
+              "RelativeDocumentMoniker": "PokerPlanning\\Components\\Layout\\MainLayout.razor",
+              "ToolTip": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning\\Components\\Layout\\MainLayout.razor",
+              "RelativeToolTip": "PokerPlanning\\Components\\Layout\\MainLayout.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-28T10:43:54.533Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "TeamService.cs",
+              "DocumentMoniker": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning.Services\\TeamService.cs",
+              "RelativeDocumentMoniker": "PokerPlanning.Services\\TeamService.cs",
+              "ToolTip": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning.Services\\TeamService.cs",
+              "RelativeToolTip": "PokerPlanning.Services\\TeamService.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAhwAoAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-28T01:33:51.244Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "BaseRepository.cs",
+              "DocumentMoniker": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning.Data\\BaseRepository.cs",
+              "RelativeDocumentMoniker": "PokerPlanning.Data\\BaseRepository.cs",
+              "ToolTip": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning.Data\\BaseRepository.cs",
+              "RelativeToolTip": "PokerPlanning.Data\\BaseRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-28T00:39:52.261Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "TeamRepository.cs",
+              "DocumentMoniker": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning.Data\\TeamRepository.cs",
+              "RelativeDocumentMoniker": "PokerPlanning.Data\\TeamRepository.cs",
+              "ToolTip": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning.Data\\TeamRepository.cs",
+              "RelativeToolTip": "PokerPlanning.Data\\TeamRepository.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAIA0wB0AAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-28T00:35:52.675Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Team.cs",
+              "DocumentMoniker": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning.Models\\Team.cs",
+              "RelativeDocumentMoniker": "PokerPlanning.Models\\Team.cs",
+              "ToolTip": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning.Models\\Team.cs",
+              "RelativeToolTip": "PokerPlanning.Models\\Team.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-28T00:34:41.888Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "NavMenu.razor",
+              "DocumentMoniker": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning\\Components\\Layout\\NavMenu.razor",
+              "RelativeDocumentMoniker": "PokerPlanning\\Components\\Layout\\NavMenu.razor",
+              "ToolTip": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning\\Components\\Layout\\NavMenu.razor",
+              "RelativeToolTip": "PokerPlanning\\Components\\Layout\\NavMenu.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAABXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-28T00:13:18.238Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Teams.razor",
+              "DocumentMoniker": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning\\Components\\Pages\\Teams\\Teams.razor",
+              "RelativeDocumentMoniker": "PokerPlanning\\Components\\Pages\\Teams\\Teams.razor",
+              "ToolTip": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning\\Components\\Pages\\Teams\\Teams.razor",
+              "RelativeToolTip": "PokerPlanning\\Components\\Pages\\Teams\\Teams.razor",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAAAD8AAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-28T00:13:14.054Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "TeamsAddEdit.razor",
+              "DocumentMoniker": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning\\Components\\Pages\\Teams\\TeamsAddEdit.razor",
+              "RelativeDocumentMoniker": "PokerPlanning\\Components\\Pages\\Teams\\TeamsAddEdit.razor",
+              "ToolTip": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning\\Components\\Pages\\Teams\\TeamsAddEdit.razor",
+              "RelativeToolTip": "PokerPlanning\\Components\\Pages\\Teams\\TeamsAddEdit.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-28T09:44:57.074Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Rooms.razor",
+              "DocumentMoniker": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning\\Components\\Pages\\Rooms.razor",
+              "RelativeDocumentMoniker": "PokerPlanning\\Components\\Pages\\Rooms.razor",
+              "ToolTip": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning\\Components\\Pages\\Rooms.razor",
+              "RelativeToolTip": "PokerPlanning\\Components\\Pages\\Rooms.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-28T00:10:55.542Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "_Imports.razor",
+              "DocumentMoniker": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning\\Components\\_Imports.razor",
+              "RelativeDocumentMoniker": "PokerPlanning\\Components\\_Imports.razor",
+              "ToolTip": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning\\Components\\_Imports.razor",
+              "RelativeToolTip": "PokerPlanning\\Components\\_Imports.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-28T11:25:48.689Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Counter.razor",
+              "DocumentMoniker": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning\\Components\\Pages\\Counter.razor",
+              "RelativeDocumentMoniker": "PokerPlanning\\Components\\Pages\\Counter.razor",
+              "ToolTip": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning\\Components\\Pages\\Counter.razor",
+              "RelativeToolTip": "PokerPlanning\\Components\\Pages\\Counter.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-28T00:10:40.763Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Global.cs",
+              "DocumentMoniker": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning\\Global.cs",
+              "RelativeDocumentMoniker": "PokerPlanning\\Global.cs",
+              "ToolTip": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning\\Global.cs",
+              "RelativeToolTip": "PokerPlanning\\Global.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-28T00:08:23.629Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning\\Program.cs",
+              "RelativeDocumentMoniker": "PokerPlanning\\Program.cs",
+              "ToolTip": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning\\Program.cs",
+              "RelativeToolTip": "PokerPlanning\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-28T00:07:27.181Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Class1.cs",
+              "DocumentMoniker": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning.Models\\Class1.cs",
+              "RelativeDocumentMoniker": "PokerPlanning.Models\\Class1.cs",
+              "ToolTip": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning.Models\\Class1.cs",
+              "RelativeToolTip": "PokerPlanning.Models\\Class1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-28T00:05:17.828Z",
+              "EditorCaption": ""
             }
           ]
         }

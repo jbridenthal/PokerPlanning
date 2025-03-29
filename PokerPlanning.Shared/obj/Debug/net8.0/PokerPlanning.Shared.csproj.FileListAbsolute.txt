@@ -1,0 +1,12 @@
+C:\Users\james\source\repos\PokerPlanning\PokerPlanning.Shared\bin\Debug\net8.0\PokerPlanning.Shared.deps.json
+C:\Users\james\source\repos\PokerPlanning\PokerPlanning.Shared\bin\Debug\net8.0\PokerPlanning.Shared.dll
+C:\Users\james\source\repos\PokerPlanning\PokerPlanning.Shared\bin\Debug\net8.0\PokerPlanning.Shared.pdb
+C:\Users\james\source\repos\PokerPlanning\PokerPlanning.Shared\obj\Debug\net8.0\PokerPlanning.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\james\source\repos\PokerPlanning\PokerPlanning.Shared\obj\Debug\net8.0\PokerPlanning.Shared.AssemblyInfoInputs.cache
+C:\Users\james\source\repos\PokerPlanning\PokerPlanning.Shared\obj\Debug\net8.0\PokerPlanning.Shared.AssemblyInfo.cs
+C:\Users\james\source\repos\PokerPlanning\PokerPlanning.Shared\obj\Debug\net8.0\PokerPlanning.Shared.csproj.CoreCompileInputs.cache
+C:\Users\james\source\repos\PokerPlanning\PokerPlanning.Shared\obj\Debug\net8.0\PokerPlanning.Shared.sourcelink.json
+C:\Users\james\source\repos\PokerPlanning\PokerPlanning.Shared\obj\Debug\net8.0\PokerPlanning.Shared.dll
+C:\Users\james\source\repos\PokerPlanning\PokerPlanning.Shared\obj\Debug\net8.0\refint\PokerPlanning.Shared.dll
+C:\Users\james\source\repos\PokerPlanning\PokerPlanning.Shared\obj\Debug\net8.0\PokerPlanning.Shared.pdb
+C:\Users\james\source\repos\PokerPlanning\PokerPlanning.Shared\obj\Debug\net8.0\ref\PokerPlanning.Shared.dll

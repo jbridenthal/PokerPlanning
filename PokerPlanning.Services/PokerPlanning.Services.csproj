@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PokerPlanning.Data\PokerPlanning.Data.csproj" />
+    <ProjectReference Include="..\PokerPlanning.Models\PokerPlanning.Models.csproj" />
+    <ProjectReference Include="..\PokerPlanning.Shared\PokerPlanning.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,75 @@
+﻿@page "/teams"
+@inject IDialogService DialogService
+@inject TeamService teamService
+
+
+<h3>Teams</h3>
+
+<FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size20.PeopleTeamAdd())" OnClick="@(() => TeamAddEdit())">Add Team</FluentButton>
+
+<FluentDataGrid Items="@TeamsData.AsQueryable()" Pagination="@pagination">
+    <PropertyColumn Property="@( (Team p) => p.Name )" Sortable="true" />
+    <TemplateColumn Title="Actions" Align="@Align.End" Context="team">
+        <FluentButton aria-label="Edit item" IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(()=>TeamAddEdit(team))" />
+        <FluentButton aria-label="Delete item" IconEnd="@(new Icons.Regular.Size16.Delete())" OnClick="@(()=>TeamDelete(team))" />
+    </TemplateColumn>
+</FluentDataGrid>
+
+<FluentPaginator State="@pagination" />
+
+@code {
+    private List<Team> TeamsData = new(); 
+    private PaginationState pagination = new() { ItemsPerPage = 10 };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(1); // Simulating async work
+        TeamsData = teamService.GetTeams().ToList(); 
+        StateHasChanged();
+    }
+    async Task TeamDelete(Team team)
+    {
+        var dialog = await DialogService.ShowDialogAsync<ConfirmCancelDialog>(new DialogParameters()
+            {
+                Height = "240px",
+                Title = $"Delete {team.Name} ",
+                PreventDismissOnOverlayClick = true,
+                PreventScroll = true,
+            });
+        var result = await dialog.Result;
+        if(!result.Cancelled)
+        {
+            await teamService.DeleteTeamAsync(team.Id); 
+            TeamsData = teamService.GetTeams().ToList();
+            StateHasChanged();
+        }
+    }
+
+    async Task TeamAddEdit(Team team = null)
+    {
+        var addNewTeam = string.IsNullOrEmpty(team?.Name);
+        var DialogData = addNewTeam ? new Team() : team;
+        var dialog = await DialogService.ShowDialogAsync<TeamsAddEdit>(DialogData, new DialogParameters()
+            {
+                Height = "240px",
+                Title = addNewTeam ? $"Add new team" : $"Update {team.Name} ",
+                PreventDismissOnOverlayClick = true,
+                PreventScroll = true,
+            });
+
+        var result = await dialog.Result;
+        if (!result.Cancelled && result.Data != null)
+        {
+            if(addNewTeam) {
+                await teamService.AddTeamAsync((Team)result.Data);
+            } 
+            else {
+                await teamService.UpdateTeamAsync((Team)result.Data);
+            }
+        }
+
+        TeamsData = teamService.GetTeams().ToList();
+        StateHasChanged();
+    }
+}
+

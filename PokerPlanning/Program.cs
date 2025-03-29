@@ -1,5 +1,4 @@
-using Microsoft.FluentUI.AspNetCore.Components;
-using PokerPlanning.Components;
+using PokerPlanning.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddFluentUIComponents();
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddSingleton<TeamService>();
+builder.Services.AddSingleton<TeamRepository>();
 
 var app = builder.Build();
 

@@ -17,6 +17,8 @@ build_property.SupportLocalizedComponentNames =
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
 build_property.MSBuildProjectDirectory = C:\Users\james\source\repos\PokerPlanning\PokerPlanning
 build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
 
 [C:/Users/james/source/repos/PokerPlanning/PokerPlanning/Components/App.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
@@ -40,6 +42,22 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/james/source/repos/PokerPlanning/PokerPlanning/Components/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/james/source/repos/PokerPlanning/PokerPlanning/Components/Pages/Rooms.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSb29tcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/james/source/repos/PokerPlanning/PokerPlanning/Components/Pages/Shared/ConfirmCancelDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTaGFyZWRcQ29uZmlybUNhbmNlbERpYWxvZy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/james/source/repos/PokerPlanning/PokerPlanning/Components/Pages/Teams/Teams.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUZWFtc1xUZWFtcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/james/source/repos/PokerPlanning/PokerPlanning/Components/Pages/Teams/TeamsAddEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUZWFtc1xUZWFtc0FkZEVkaXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/james/source/repos/PokerPlanning/PokerPlanning/Components/Pages/Weather.razor]

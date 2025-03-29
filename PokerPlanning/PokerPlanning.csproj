@@ -7,7 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
     <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.11.7" />
     <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.11.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PokerPlanning.Models\PokerPlanning.Models.csproj" />
+    <ProjectReference Include="..\PokerPlanning.Services\PokerPlanning.Services.csproj" />
+    <ProjectReference Include="..\PokerPlanning.Shared\PokerPlanning.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components\Pages\Rooms\" />
   </ItemGroup>
 </Project>
