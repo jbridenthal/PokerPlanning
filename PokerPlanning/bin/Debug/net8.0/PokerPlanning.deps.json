@@ -295,6 +295,17 @@
           }
         }
       },
+      "NetTopologySuite/2.5.0": {
+        "dependencies": {
+          "System.Memory": "4.5.4"
+        },
+        "runtime": {
+          "lib/netstandard2.0/NetTopologySuite.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.0.0"
+          }
+        }
+      },
       "Newtonsoft.Json/13.0.2": {
         "runtime": {
           "lib/net6.0/Newtonsoft.Json.dll": {
@@ -303,10 +314,48 @@
           }
         }
       },
+      "NRedisStack/0.13.2": {
+        "dependencies": {
+          "NetTopologySuite": "2.5.0",
+          "StackExchange.Redis": "2.8.16"
+        },
+        "runtime": {
+          "lib/net8.0/NRedisStack.dll": {
+            "assemblyVersion": "0.13.2.0",
+            "fileVersion": "0.13.2.0"
+          }
+        }
+      },
+      "Pipelines.Sockets.Unofficial/2.2.8": {
+        "dependencies": {
+          "System.IO.Pipelines": "8.0.0"
+        },
+        "runtime": {
+          "lib/net5.0/Pipelines.Sockets.Unofficial.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "2.2.8.1080"
+          }
+        }
+      },
+      "StackExchange.Redis/2.8.16": {
+        "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.3",
+          "Pipelines.Sockets.Unofficial": "2.2.8"
+        },
+        "runtime": {
+          "lib/net6.0/StackExchange.Redis.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.8.16.12844"
+          }
+        }
+      },
       "System.IO.Pipelines/8.0.0": {},
+      "System.Memory/4.5.4": {},
       "PokerPlanning.Data/1.0.0": {
         "dependencies": {
+          "Blazored.LocalStorage": "4.5.0",
           "JsonFlatFileDataStore": "2.4.2",
+          "NRedisStack": "0.13.2",
           "PokerPlanning.Models": "1.0.0",
           "PokerPlanning.Shared": "1.0.0"
         },
@@ -318,6 +367,9 @@
         }
       },
       "PokerPlanning.Models/1.0.0": {
+        "dependencies": {
+          "PokerPlanning.Shared": "1.0.0"
+        },
         "runtime": {
           "PokerPlanning.Models.dll": {
             "assemblyVersion": "1.0.0.0",
@@ -543,6 +595,13 @@
       "path": "microsoft.jsinterop/8.0.14",
       "hashPath": "microsoft.jsinterop.8.0.14.nupkg.sha512"
     },
+    "NetTopologySuite/2.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5/+2O2ADomEdUn09mlSigACdqvAf0m/pVPGtIPEPQWnyrVykYY0NlfXLIdkMgi41kvH9kNrPqYaFBTZtHYH7Xw==",
+      "path": "nettopologysuite/2.5.0",
+      "hashPath": "nettopologysuite.2.5.0.nupkg.sha512"
+    },
     "Newtonsoft.Json/13.0.2": {
       "type": "package",
       "serviceable": true,
@@ -550,12 +609,40 @@
       "path": "newtonsoft.json/13.0.2",
       "hashPath": "newtonsoft.json.13.0.2.nupkg.sha512"
     },
+    "NRedisStack/0.13.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-tgtzv5D3HrC9frmCzd/va5xJldMhw3mZ4j56nQZGJOjnhfKjaR3dNHT04l9PSrMJZkHu4laKcvNMki9q28wAAA==",
+      "path": "nredisstack/0.13.2",
+      "hashPath": "nredisstack.0.13.2.nupkg.sha512"
+    },
+    "Pipelines.Sockets.Unofficial/2.2.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-zG2FApP5zxSx6OcdJQLbZDk2AVlN2BNQD6MorwIfV6gVj0RRxWPEp2LXAxqDGZqeNV1Zp0BNPcNaey/GXmTdvQ==",
+      "path": "pipelines.sockets.unofficial/2.2.8",
+      "hashPath": "pipelines.sockets.unofficial.2.2.8.nupkg.sha512"
+    },
+    "StackExchange.Redis/2.8.16": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-WaoulkOqOC9jHepca3JZKFTqndCWab5uYS7qCzmiQDlrTkFaDN7eLSlEfHycBxipRnQY9ppZM7QSsWAwUEGblw==",
+      "path": "stackexchange.redis/2.8.16",
+      "hashPath": "stackexchange.redis.2.8.16.nupkg.sha512"
+    },
     "System.IO.Pipelines/8.0.0": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-FHNOatmUq0sqJOkTx+UF/9YK1f180cnW5FVqnQMvYUN0elp6wFzbtPSiqbo1/ru8ICp43JM1i7kKkk6GsNGHlA==",
       "path": "system.io.pipelines/8.0.0",
       "hashPath": "system.io.pipelines.8.0.0.nupkg.sha512"
+    },
+    "System.Memory/4.5.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-1MbJTHS1lZ4bS4FmsJjnuGJOu88ZzTT2rLvrhW7Ygic+pC0NWA+3hgAen0HRdsocuQXCkUTdFn9yHJJhsijDXw==",
+      "path": "system.memory/4.5.4",
+      "hashPath": "system.memory.4.5.4.nupkg.sha512"
     },
     "PokerPlanning.Data/1.0.0": {
       "type": "project",

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PokerPlanning.Data")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a7c3492e7d60d6c4f9aa28c51c12ae688123704c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+530211c348bdfb96dcb2f51684ef361cbd2a5301")]
 [assembly: System.Reflection.AssemblyProductAttribute("PokerPlanning.Data")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PokerPlanning.Data")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

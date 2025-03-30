@@ -1,0 +1,54 @@
+﻿@implements IDialogContentComponent<Room>
+
+
+<FluentDialogHeader ShowDismiss="true">
+    <FluentStack VerticalAlignment="VerticalAlignment.Center">
+        <FluentIcon Value="@(new Icons.Regular.Size24.WindowApps())" />
+        <FluentLabel Typo="Typography.PaneHeader">
+            @Dialog.Instance.Parameters.Title
+        </FluentLabel>
+    </FluentStack>
+</FluentDialogHeader>
+
+
+<FluentDialogFooter>
+    <FluentButton Appearance="Appearance.Accent" OnClick="@SaveAsync">Save</FluentButton>
+    <FluentButton Appearance="Appearance.Neutral" OnClick="@CancelAsync">Cancel</FluentButton>
+</FluentDialogFooter>
+
+
+<FluentDialogBody>
+    <FluentTextField @bind-Value="@DeleteMatch" Required Label="Enter in name of room to delete:"></FluentTextField>
+    @if(matchError) {
+        <FluentLabel Color="Color.Error">Name does not match</FluentLabel>
+    }
+</FluentDialogBody>
+
+@code {
+    [Parameter]
+    public Room Content { get; set; } = default!;
+
+
+    public string DeleteMatch { get; set; } = default!;
+    public bool matchError { get; set; } = false;
+
+    [CascadingParameter]
+    public FluentDialog Dialog { get; set; } = default!;
+
+    private async Task SaveAsync()
+    {
+        if (DeleteMatch == Content.Name)
+        {
+            await Dialog.CloseAsync(Content);
+        }
+        else
+        {
+            matchError = true;
+        }
+    }
+
+    private async Task CancelAsync()
+    {
+        await Dialog.CancelAsync();
+    }
+}

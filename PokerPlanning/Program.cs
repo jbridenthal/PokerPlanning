@@ -1,5 +1,3 @@
-using PokerPlanning.Services;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,6 +7,8 @@ builder.Services.AddFluentUIComponents();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddSingleton<TeamService>();
 builder.Services.AddSingleton<TeamRepository>();
+builder.Services.AddSingleton<RoomService>();
+builder.Services.AddSingleton<RoomRepository>();
 
 var app = builder.Build();
 

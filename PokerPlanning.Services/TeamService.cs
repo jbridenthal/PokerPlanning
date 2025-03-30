@@ -7,28 +7,24 @@ namespace PokerPlanning.Services
     {
         private TeamRepository _repo;
         public TeamService(TeamRepository teamRepository) { _repo = teamRepository; }
-        public IEnumerable<Team> GetTeams(params int[] Ids)
-        {
-            return _repo.GetTeams(Ids);
-        }
         public IEnumerable<Team> GetTeams()
         {
             return _repo.GetTeams();
         }
 
-        public async Task<bool> AddTeamAsync(Team team)
+        public async Task AddTeamAsync(Team team)
         {
-            return await _repo.AddTeamAsync(team);
+             await _repo.AddTeamAsync(team);
         }
 
-        public async Task<bool> DeleteTeamAsync(int Id)
+        public async Task DeleteTeamAsync(Team team)
         {
-            return await _repo.DeleteTeamAsync(Id);
+             await _repo.DeleteTeamAsync(team);
         }
 
-        public async Task<bool> UpdateTeamAsync(Team team)
+        public async Task UpdateTeamAsync(Team team)
         {
-            return await _repo.UpdateTeamAsync(team);
+             await _repo.UpdateTeamAsync(team);
         }
     }
 }

@@ -44,20 +44,28 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/james/source/repos/PokerPlanning/PokerPlanning/Components/Pages/Rooms.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSb29tcy5yYXpvcg==
+[C:/Users/james/source/repos/PokerPlanning/PokerPlanning/Components/Pages/Rooms/RoomAddEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSb29tc1xSb29tQWRkRWRpdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/james/source/repos/PokerPlanning/PokerPlanning/Components/Pages/Rooms/RoomDelete.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSb29tc1xSb29tRGVsZXRlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/james/source/repos/PokerPlanning/PokerPlanning/Components/Pages/Rooms/Rooms.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSb29tc1xSb29tcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/james/source/repos/PokerPlanning/PokerPlanning/Components/Pages/Shared/ConfirmCancelDialog.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTaGFyZWRcQ29uZmlybUNhbmNlbERpYWxvZy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/james/source/repos/PokerPlanning/PokerPlanning/Components/Pages/Teams/Teams.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUZWFtc1xUZWFtcy5yYXpvcg==
+[C:/Users/james/source/repos/PokerPlanning/PokerPlanning/Components/Pages/Teams/TeamAddEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUZWFtc1xUZWFtQWRkRWRpdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/james/source/repos/PokerPlanning/PokerPlanning/Components/Pages/Teams/TeamsAddEdit.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUZWFtc1xUZWFtc0FkZEVkaXQucmF6b3I=
+[C:/Users/james/source/repos/PokerPlanning/PokerPlanning/Components/Pages/Teams/Teams.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUZWFtc1xUZWFtcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/james/source/repos/PokerPlanning/PokerPlanning/Components/Pages/Weather.razor]

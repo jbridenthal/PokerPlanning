@@ -1,0 +1,93 @@
+﻿@page "/rooms"
+@inject IDialogService DialogService
+@inject RoomService roomService
+
+<div style="padding: 1em;">
+    <h3>Rooms</h3>
+    <FluentButton Appearance="Appearance.Accent" OnClick="@(()=>RoomAddEdit())">Create Room</FluentButton>
+</div>
+<FluentGrid Spacing="1" AdaptiveRendering="true" Justify="JustifyContent.FlexStart" >
+    @foreach (Room room in RoomsData)
+    {
+
+        <FluentGridItem xs="12" sm="10" md="6" lg="3">
+            <FluentCard Width="400px" Height="125px">
+                <FluentPersona Name="@room.Name"
+                ImageSize="75px"
+                StatusSize="PresenceBadgeSize.Medium">
+                    <FluentGrid Spacing="1" AdaptiveRendering="true" Justify="JustifyContent.FlexStart">
+                        <FluentGridItem xs="12">
+                            <h3>@room.Name</h3>
+                        </FluentGridItem> 
+                        <FluentGridItem xs="6">
+                            <FluentButton IconStart="@(new Icons.Regular.Size16.ArrowCircleRight())" Appearance="Appearance.Accent">Join</FluentButton>
+                            <FluentButton IconStart="@(new Icons.Regular.Size16.Edit())" Appearance="Appearance.Neutral" OnClick="@(()=>RoomAddEdit(room))">Edit</FluentButton>
+                            <FluentButton Appearance="Appearance.Neutral" IconStart="@(new Icons.Regular.Size16.Delete())" OnClick="@(()=>RoomDelete(room))">Delete</FluentButton>
+                        </FluentGridItem>
+                    </FluentGrid>
+                </FluentPersona>
+            </FluentCard>
+        </FluentGridItem>
+    }
+</FluentGrid>
+
+@code {
+
+    private List<Room> RoomsData = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(1); // Simulating async work
+        RoomsData = roomService.GetRooms().ToList();
+        StateHasChanged();
+    }
+
+    async Task RoomAddEdit(Room room = null)
+    {
+        var addNewRoom = string.IsNullOrEmpty(room?.Name);
+        var DialogData = addNewRoom ? new Room() : room;
+        var dialog = await DialogService.ShowDialogAsync<RoomAddEdit>(DialogData, new DialogParameters()
+            {
+                Height = "240px",
+                Title = addNewRoom ? $"Add new room" : $"Update {room.Name} ",
+                PreventDismissOnOverlayClick = true,
+                PreventScroll = true,
+            });
+
+        var result = await dialog.Result;
+        if (!result.Cancelled && result.Data != null)
+        {
+            if (addNewRoom)
+            {
+                await roomService.AddRoomAsync((Room)result.Data);
+            }
+            else
+            {
+                await roomService.UpdateRoomAsync((Room)result.Data);
+            }
+        }
+
+        RoomsData = roomService.GetRooms().ToList();
+        StateHasChanged();
+    }
+
+    async Task RoomDelete(Room room)
+    {
+        var dialog = await DialogService.ShowDialogAsync<RoomDelete>(room, new DialogParameters()
+            {
+                Height = "240px",
+                Title = "Delete room",
+                PreventDismissOnOverlayClick = true,
+                PreventScroll = true,
+            });
+
+        var result = await dialog.Result;
+        if (!result.Cancelled && result.Data != null)
+        {
+                await roomService.DeleteRoomAsync(room.Id);
+        }
+
+        RoomsData = roomService.GetRooms().ToList();
+        StateHasChanged();
+    }
+}

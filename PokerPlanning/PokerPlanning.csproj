@@ -17,8 +17,4 @@
     <ProjectReference Include="..\PokerPlanning.Services\PokerPlanning.Services.csproj" />
     <ProjectReference Include="..\PokerPlanning.Shared\PokerPlanning.Shared.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Components\Pages\Rooms\" />
-  </ItemGroup>
 </Project>

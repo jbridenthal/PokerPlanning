@@ -58,9 +58,17 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Blazored.LocalStorage": {
+              "target": "Package",
+              "version": "[4.5.0, )"
+            },
             "JsonFlatFileDataStore": {
               "target": "Package",
               "version": "[2.4.2, )"
+            },
+            "NRedisStack": {
+              "target": "Package",
+              "version": "[0.13.2, )"
             }
           },
           "imports": [
@@ -111,7 +119,11 @@
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning.Shared\\PokerPlanning.Shared.csproj": {
+                "projectPath": "C:\\Users\\james\\source\\repos\\PokerPlanning\\PokerPlanning.Shared\\PokerPlanning.Shared.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

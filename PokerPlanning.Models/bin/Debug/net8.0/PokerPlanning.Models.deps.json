@@ -7,14 +7,30 @@
   "targets": {
     ".NETCoreApp,Version=v8.0": {
       "PokerPlanning.Models/1.0.0": {
+        "dependencies": {
+          "PokerPlanning.Shared": "1.0.0"
+        },
         "runtime": {
           "PokerPlanning.Models.dll": {}
+        }
+      },
+      "PokerPlanning.Shared/1.0.0": {
+        "runtime": {
+          "PokerPlanning.Shared.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }
   },
   "libraries": {
     "PokerPlanning.Models/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "PokerPlanning.Shared/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

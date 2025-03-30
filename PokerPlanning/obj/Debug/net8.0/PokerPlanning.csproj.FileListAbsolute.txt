@@ -65,3 +65,8 @@ C:\Users\james\source\repos\PokerPlanning\PokerPlanning\obj\Debug\net8.0\staticw
 C:\Users\james\source\repos\PokerPlanning\PokerPlanning\obj\Debug\net8.0\staticwebassets\msbuild.PokerPlanning.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
 C:\Users\james\source\repos\PokerPlanning\PokerPlanning\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\james\source\repos\PokerPlanning\PokerPlanning\bin\Debug\net8.0\teamData.json
+C:\Users\james\source\repos\PokerPlanning\PokerPlanning\bin\Debug\net8.0\RoomData.json
+C:\Users\james\source\repos\PokerPlanning\PokerPlanning\bin\Debug\net8.0\NetTopologySuite.dll
+C:\Users\james\source\repos\PokerPlanning\PokerPlanning\bin\Debug\net8.0\NRedisStack.dll
+C:\Users\james\source\repos\PokerPlanning\PokerPlanning\bin\Debug\net8.0\Pipelines.Sockets.Unofficial.dll
+C:\Users\james\source\repos\PokerPlanning\PokerPlanning\bin\Debug\net8.0\StackExchange.Redis.dll

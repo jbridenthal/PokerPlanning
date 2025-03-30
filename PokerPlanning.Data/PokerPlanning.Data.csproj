@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
     <PackageReference Include="JsonFlatFileDataStore" Version="2.4.2" />
+    <PackageReference Include="NRedisStack" Version="0.13.2" />
   </ItemGroup>
 
   <ItemGroup>
