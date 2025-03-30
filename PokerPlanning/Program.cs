@@ -1,3 +1,6 @@
+
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,10 +8,10 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddFluentUIComponents();
 builder.Services.AddBlazoredLocalStorage();
-builder.Services.AddSingleton<TeamService>();
-builder.Services.AddSingleton<TeamRepository>();
-builder.Services.AddSingleton<RoomService>();
-builder.Services.AddSingleton<RoomRepository>();
+builder.Services.AddSingleton<ITeamService, TeamService>();
+builder.Services.AddSingleton<ITeamRepository, TeamRepository>();
+builder.Services.AddSingleton<IRoomService, RoomService>();
+builder.Services.AddSingleton<IRoomRepository, RoomRepository>();
 
 var app = builder.Build();
 

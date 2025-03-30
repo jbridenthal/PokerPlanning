@@ -1,10 +1,6 @@
-﻿using PokerPlanning.Models;
-using PokerPlanning.Shared;
-using StackExchange.Redis;
-
-namespace PokerPlanning.Data
+﻿namespace PokerPlanning.Data
 {
-    public class TeamRepository : BaseRepository
+    public class TeamRepository : BaseRepository, ITeamRepository
     {
         private const string HASH_KEY = "pokerPlanning.Teams";
 
@@ -24,7 +20,8 @@ namespace PokerPlanning.Data
             if (DBContext.HashExists(HASH_KEY, team.Name))
             {
                 throw new InvalidOperationException("Team name already exists");
-            } else
+            }
+            else
             {
                 await DBContext.HashSetAsync(HASH_KEY, team.Name, Guid.NewGuid().ToString());
             }
@@ -34,7 +31,7 @@ namespace PokerPlanning.Data
         {
             await DeleteTeamAsync(team.Name);
         }
-        private  async Task DeleteTeamAsync(string teamName)
+        private async Task DeleteTeamAsync(string teamName)
         {
             await DBContext.HashDeleteAsync(HASH_KEY, teamName);
         }

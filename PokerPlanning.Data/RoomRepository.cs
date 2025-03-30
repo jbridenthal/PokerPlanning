@@ -1,44 +1,53 @@
-﻿using PokerPlanning.Models;
-using PokerPlanning.Shared;
-
-namespace PokerPlanning.Data
+﻿namespace PokerPlanning.Data
 {
-    public class RoomRepository : BaseRepository
+    public class RoomRepository : BaseRepository, IRoomRepository
     {
-        public IEnumerable<Room> GetRooms(params int[] Ids)
-        {
-            var collection = RoomDatastore.GetCollection<Room>();
-            return collection.AsQueryable().Where(x => x.Id.In(Ids)) ?? new List<Room>();
-        }
+        private const string HASH_KEY = "pokerPlanning.Rooms";
         public IEnumerable<Room> GetRooms()
         {
-            return RoomDatastore.GetCollection<Room>().AsQueryable();
+            var allRoom = DBContext.HashGetAll(HASH_KEY);
+            var returnRoom = new List<Room>();
+            foreach (var item in allRoom)
+            {
+                returnRoom.Add(new Room { Name = item.Name, Id = new Guid(item.Value.ToString()) });
+            }
+            return returnRoom;
         }
 
-        public async Task<bool> AddRoomAsync(Room Room)
+        public async Task AddRoomAsync(Room room)
         {
-            var collection = RoomDatastore.GetCollection<Room>();
-            if (collection.AsQueryable().Any(x => x.Name == Room.Name))
+            if (DBContext.HashExists(HASH_KEY, room.Name))
             {
                 throw new InvalidOperationException("Room name already exists");
             }
-            return await collection.InsertOneAsync(Room);
-        }
-
-        public async Task<bool> DeleteRoomAsync(int Id)
-        {
-            var collection = RoomDatastore.GetCollection<Room>();
-            return await collection.DeleteOneAsync(Id);
-        }
-
-        public async Task<bool> UpdateRoomAsync(Room Room)
-        {
-            var collection = RoomDatastore.GetCollection<Room>();
-            if (collection.AsQueryable().Any(x => x.Name == Room.Name))
+            else
             {
-                throw new InvalidOperationException("Room name already exists");
+                await DBContext.HashSetAsync(HASH_KEY, room.Name, Guid.NewGuid().ToString());
             }
-            return await collection.UpdateOneAsync(x => x.Id == Room.Id, Room);
+        }
+        public async Task DeleteRoomAsync(Room room)
+        {
+            await DeleteRoomAsync(room.Name);
+        }
+
+        private async Task DeleteRoomAsync(string roomName)
+        {
+            await DBContext.HashDeleteAsync(HASH_KEY, roomName);
+        }
+
+        public async Task UpdateRoomAsync(Room room)
+        {
+            if (DBContext.HashExists(HASH_KEY, room.Name))
+            {
+                throw new InvalidOperationException("Team name already exists");
+            }
+            else
+            {
+                var allTeams = await DBContext.HashGetAllAsync(HASH_KEY);
+                var oldTeamKey = allTeams.Where(x => x.Value == room.Id.ToString()).FirstOrDefault().Name;
+                await DeleteRoomAsync(oldTeamKey.ToString());
+                await DBContext.HashSetAsync(HASH_KEY, room.Name, room.Id.ToString());
+            }
         }
     }
 }

@@ -1,34 +1,28 @@
-﻿using PokerPlanning.Data;
-using PokerPlanning.Models;
-
-namespace PokerPlanning.Services
+﻿namespace PokerPlanning.Services
 {
-    public class RoomService
+    public class RoomService : IRoomService
     {
-        private RoomRepository _repo;
-        public RoomService(RoomRepository roomRepository) { _repo = roomRepository; }
-        public IEnumerable<Room> GetRooms(params int[] Ids)
-        {
-            return _repo.GetRooms(Ids);
-        }
+        private IRoomRepository _repo;
+        public RoomService(IRoomRepository roomRepository) { _repo = roomRepository; }
+
         public IEnumerable<Room> GetRooms()
         {
             return _repo.GetRooms();
         }
 
-        public async Task<bool> AddRoomAsync(Room Room)
+        public async Task AddRoomAsync(Room room)
         {
-            return await _repo.AddRoomAsync(Room);
+            await _repo.AddRoomAsync(room);
         }
 
-        public async Task<bool> DeleteRoomAsync(int Id)
+        public async Task DeleteRoomAsync(Room room)
         {
-            return await _repo.DeleteRoomAsync(Id);
+            await _repo.DeleteRoomAsync(room);
         }
 
-        public async Task<bool> UpdateRoomAsync(Room Room)
+        public async Task UpdateRoomAsync(Room room)
         {
-            return await _repo.UpdateRoomAsync(Room);
+            await _repo.UpdateRoomAsync(room);
         }
     }
 }

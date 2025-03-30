@@ -1,12 +1,7 @@
-﻿using JsonFlatFileDataStore;
-using StackExchange.Redis;
-
-namespace PokerPlanning.Data
+﻿namespace PokerPlanning.Data
 {
     public class BaseRepository
     {
-        public DataStore TeamDatastore;
-        public DataStore RoomDatastore;
         public IDatabase DBContext;
         public BaseRepository()
         {
@@ -17,8 +12,6 @@ namespace PokerPlanning.Data
             };
             ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(conf);
             DBContext = redis.GetDatabase();
-            TeamDatastore = new DataStore("teamData.json");
-             RoomDatastore = new DataStore("RoomData.json");
         }
     }
 }

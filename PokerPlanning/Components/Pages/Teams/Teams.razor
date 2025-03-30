@@ -48,7 +48,7 @@
     async Task TeamAddEdit(Team team = null)
     {
         var addNewTeam = string.IsNullOrEmpty(team?.Name);
-        var DialogData = addNewTeam ? new Team() : team;
+        var DialogData = addNewTeam ? new Team { Name = String.Empty } : team;
         var dialog = await DialogService.ShowDialogAsync<TeamAddEdit>(DialogData, new DialogParameters()
             {
                 Height = "240px",
@@ -58,7 +58,7 @@
             });
 
         var result = await dialog.Result;
-        if (!result.Cancelled && result.Data != null)
+        if (!result.Cancelled && result.Data != null && !String.IsNullOrEmpty(((Team)result.Data).Name))
         {
             if(addNewTeam) {
                 await teamService.AddTeamAsync((Team)result.Data);

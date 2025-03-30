@@ -45,7 +45,7 @@
     async Task RoomAddEdit(Room room = null)
     {
         var addNewRoom = string.IsNullOrEmpty(room?.Name);
-        var DialogData = addNewRoom ? new Room() : room;
+        var DialogData = addNewRoom ? new Room { Name = string.Empty } : room;
         var dialog = await DialogService.ShowDialogAsync<RoomAddEdit>(DialogData, new DialogParameters()
             {
                 Height = "240px",
@@ -55,7 +55,7 @@
             });
 
         var result = await dialog.Result;
-        if (!result.Cancelled && result.Data != null)
+        if (!result.Cancelled && result.Data != null && !String.IsNullOrEmpty(((Room)result.Data).Name))
         {
             if (addNewRoom)
             {
@@ -84,7 +84,7 @@
         var result = await dialog.Result;
         if (!result.Cancelled && result.Data != null)
         {
-                await roomService.DeleteRoomAsync(room.Id);
+                await roomService.DeleteRoomAsync(room);
         }
 
         RoomsData = roomService.GetRooms().ToList();
