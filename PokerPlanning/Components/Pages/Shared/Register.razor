@@ -1,0 +1,53 @@
+﻿@page "/register"
+@using System.ComponentModel.DataAnnotations
+@inject IUserService UserService
+@inject NavigationManager NavigationManager
+
+<h3>Register</h3>
+
+<FluentDesignSystemProvider>
+    <FluentCard>
+        <EditForm Model="@registerModel" OnValidSubmit="@HandleRegistration">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <FluentTextField Label="Username" @bind-Value="registerModel.Username" />
+
+            <FluentTextField Label="Password" @bind-Value="registerModel.Password" TextFieldType="TextFieldType.Password" />
+
+            <FluentButton Appearance="Appearance.Accent" Type="ButtonType.Submit">Register</FluentButton>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <FluentLabel Style="color: red;">@errorMessage</FluentLabel>
+            }
+        </EditForm>
+    </FluentCard>
+</FluentDesignSystemProvider>
+
+@code {
+    private RegisterModel registerModel = new RegisterModel();
+    private string errorMessage;
+
+    private async Task HandleRegistration()
+    {
+        var result = await UserService.RegisterUserAsync(registerModel.Username, registerModel.Password);
+        if (result)
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            errorMessage = "Registration failed. Username may already exist.";
+        }
+    }
+
+    public class RegisterModel
+    {
+        [Required]
+        public string Username { get; set; }
+
+        [Required]
+        public string Password { get; set; }
+    }
+}

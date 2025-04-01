@@ -2,3 +2,5 @@
 global using PokerPlanning.Models;
 global using PokerPlanning.Data.Interfaces;
 global using StackExchange.Redis;
+global using System.Security.Cryptography;
+global using System.Text;

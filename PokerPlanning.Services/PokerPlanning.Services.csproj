@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.14" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PokerPlanning.Data\PokerPlanning.Data.csproj" />
     <ProjectReference Include="..\PokerPlanning.Models\PokerPlanning.Models.csproj" />
     <ProjectReference Include="..\PokerPlanning.Shared\PokerPlanning.Shared.csproj" />

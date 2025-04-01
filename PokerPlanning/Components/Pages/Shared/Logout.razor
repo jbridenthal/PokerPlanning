@@ -1,0 +1,21 @@
+﻿@page "/logout"
+@inject AuthenticationService AuthService
+@inject NavigationManager NavigationManager
+
+<h3>Logout</h3>
+
+<FluentDesignSystemProvider>
+    <FluentCard>
+        <p>Are you sure you want to log out?</p>
+
+        <FluentButton Appearance="Appearance.Accent" @onclick="HandleLogout">Logout</FluentButton>
+    </FluentCard>
+</FluentDesignSystemProvider>
+
+@code {
+    private async Task HandleLogout()
+    {
+        await AuthService.LogoutAsync();
+        NavigationManager.NavigateTo("/"); // Redirect to the main page
+    }
+}

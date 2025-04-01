@@ -8,5 +8,8 @@ namespace PokerPlanning.Models
         public Role Role { get; set; }
         public string? Vote { get; set; }
         public string? Room { get; set; }
+        public string PasswordHash { get; set; }
+        public string Salt { get; set; }
+        
     }
 }

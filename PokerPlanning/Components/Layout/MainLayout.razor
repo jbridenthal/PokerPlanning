@@ -1,5 +1,6 @@
 ﻿@inject IToastService ToastService
 @inherits LayoutComponentBase
+
 <FluentDesignTheme Mode=DesignThemeModes.Dark
                    StorageName="theme" />
 <FluentDialogProvider />
@@ -7,6 +8,16 @@
 <FluentLayout>
     <FluentHeader>
         PokerPlanning
+        <FluentStack HorizontalAlignment="@HorizontalAlignment.End"
+                     VerticalAlignment="@VerticalAlignment.Center">
+            <FluentProfileMenu Image="@(new Icons.Regular.Size48.Person().ToDataUri(size: "25px", color: "Black"))"
+                               HeaderLabel="Microsoft"
+                               Initials="BG"
+                               FullName="Bill Gates"
+                               PopoverStyle="min-width: 330px;" 
+                               HeaderButton="Sign Out"
+                               FooterLink="Change Account Information" />
+        </FluentStack>
     </FluentHeader>
     <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
         <NavMenu />
@@ -14,14 +25,32 @@
             <ChildContent>
              <FluentBodyContent Class="body-content">
                 <div class="content">
-                    @Body
+                        @if (contextLayout != null && contextLayout == typeof(AuthorizedLayout))
+                        {
+                            <AuthorizedLayout>
+                                @Body
+                            </AuthorizedLayout>
+                        }
+                        else
+                        {
+                            @Body
+                        }
                 </div>
             </FluentBodyContent>
             </ChildContent>
             <ErrorContent Context="ex">
                 <FluentBodyContent Class="body-content">
                     <div class="content">
-                        @Body
+                        @if (contextLayout != null && contextLayout == typeof(AuthorizedLayout))
+                        {
+                            <AuthorizedLayout>
+                                @Body
+                            </AuthorizedLayout>
+                        }
+                        else
+                        {
+                            @Body
+                        }
                     </div>
                 </FluentBodyContent>
                 @{ ToastService.ShowError($"Error: {ex.Message}"); }@*prints exeption on page*@
@@ -41,3 +70,7 @@
     <span class="dismiss">🗙</span>
 </div>
 
+@code {
+    [CascadingParameter]
+    Type contextLayout { get; set; }
+}

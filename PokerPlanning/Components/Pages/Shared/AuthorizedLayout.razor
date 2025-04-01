@@ -1,0 +1,24 @@
+﻿@inherits LayoutComponentBase
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
+@code {
+    private bool isAuthenticated = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        isAuthenticated = user.Identity?.IsAuthenticated ?? false;
+    }
+}
+
+@if (isAuthenticated)
+{
+    @Body
+}
+else
+{
+    <p>You are not authorized. Please log in.</p>
+    <a href="/login">Login</a>
+}

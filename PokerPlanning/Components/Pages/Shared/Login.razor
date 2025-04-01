@@ -1,0 +1,53 @@
+﻿@page "/login"
+@using System.ComponentModel.DataAnnotations
+@inject AuthenticationService AuthService
+@inject NavigationManager NavigationManager
+
+<h3>Login</h3>
+
+<FluentDesignSystemProvider>
+    <FluentCard>
+        <EditForm Model="@loginModel" OnValidSubmit="@HandleLogin">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <FluentTextField Label="Username" @bind-Value="loginModel.Username" />
+
+            <FluentTextField Label="Password" @bind-Value="loginModel.Password" Password />
+
+            <FluentButton Appearance="Appearance.Accent" Type="ButtonType.Submit">Login</FluentButton>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <FluentLabel Style="color: red;">@errorMessage</FluentLabel>
+            }
+        </EditForm>
+    </FluentCard>
+</FluentDesignSystemProvider>
+
+@code {
+    private LoginModel loginModel = new LoginModel();
+    private string errorMessage;
+
+    private async Task HandleLogin()
+    {
+        var result = await AuthService.LoginAsync(loginModel.Username, loginModel.Password);
+        if (result)
+        {
+            NavigationManager.NavigateTo("/", forceLoad: true); // Navigate to home page and force reload
+        }
+        else
+        {
+            errorMessage = "Invalid username or password.";
+        }
+    }
+
+    public class LoginModel
+    {
+        [Required]
+        public string Username { get; set; }
+
+        [Required]
+        public string Password { get; set; }
+    }
+}
