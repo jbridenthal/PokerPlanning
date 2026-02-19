@@ -1,6 +1,4 @@
-﻿using static PokerPlanning.Shared.Enums;
-
-namespace PokerPlanning.Shared
+﻿namespace PokerPlanning.Shared
 {
     public class User
     {
