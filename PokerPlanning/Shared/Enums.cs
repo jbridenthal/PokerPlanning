@@ -1,13 +1,10 @@
 ﻿namespace PokerPlanning.Shared
 {
-    public class Enums
+    public enum Role
     {
-        public enum Role
-        {
-            Dev,
-            QA,
-            Observer, 
-            Moderator
-        }
+        Dev,
+        QA,
+        Observer, 
+        Moderator
     }
 }
