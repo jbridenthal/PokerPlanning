@@ -10,7 +10,6 @@ WORKDIR /src
 COPY ["PokerPlanning/Server/PokerPlanning.Server.csproj", "PokerPlanning/Server/"]
 COPY ["PokerPlanning/Shared/PokerPlanning.Shared.csproj", "PokerPlanning/Shared/"]
 COPY ["PokerPlanning/Client/PokerPlanning.Client.csproj", "PokerPlanning/Client/"]
-RUN ls -R
 RUN dotnet restore "PokerPlanning/Server/PokerPlanning.Server.csproj"
 COPY . .
 WORKDIR "/src/PokerPlanning/Server"
