@@ -1,6 +1,6 @@
 ﻿namespace PokerPlanning.Client.Services.Interfaces
 {
-    public interface IHubService : IAsyncDisposable
+    public interface IHubService
     {
         User CurrentUser { get; set; }
         bool IsConnected { get; }
@@ -13,12 +13,10 @@
         event HubService.UserLogOut? OnUserLogOut;
         event HubService.UsersUpdated? OnUsersUpdated;
         event HubService.UserUpdated? OnUserUpdated;
-        event HubService.ErrorOccurred? OnError;
-        event HubService.ConnectionStatusChanged? OnConnectionStatusChanged;
 
         Task ClearVotes();
         Task Connect();
-        Task Connect(string setName, Role setRole);
+        Task Connect(string setName, Enums.Role setRole);
         Task Dispose();
         Task JoinRoom(string room);
         Task Logout();
