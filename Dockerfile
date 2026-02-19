@@ -1,16 +1,15 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 COPY ["PokerPlanning/Server/PokerPlanning.Server.csproj", "PokerPlanning/Server/"]
 COPY ["PokerPlanning/Shared/PokerPlanning.Shared.csproj", "PokerPlanning/Shared/"]
 COPY ["PokerPlanning/Client/PokerPlanning.Client.csproj", "PokerPlanning/Client/"]
-RUN ls -R
 RUN dotnet restore "PokerPlanning/Server/PokerPlanning.Server.csproj"
 COPY . .
 WORKDIR "/src/PokerPlanning/Server"
