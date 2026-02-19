@@ -22,6 +22,7 @@
 }
 else
 {
+    if(GetConnectedRoom() != LOBBY) { 
     <MudGrid  Class="d-flex justify-center flex-grow-1 gap-4">
         <MudItem xl="4">
             <MudContainer MaxWidth="MaxWidth.Medium">
@@ -65,10 +66,19 @@ else
             <UsersList Users=@Users ShowVotes="@showVotes" Room="@GetConnectedRoom()"></UsersList>
         </MudItem>
     </MudGrid>
+    }
+    else
+    {
+
+        <MudContainer MaxWidth="MaxWidth.Medium">
+      <RoomsList></RoomsList>
+      </MudContainer>
+    }
 }
 
 @code {
     const string LOCAL_STORAGE_NAME = "PokerPlanning.UserInfo";
+    const string LOBBY = "Lobby";
     private decimal customVote { get; set; }
     private string userName { get; set; } = string.Empty;
     private string userId = string.Empty;

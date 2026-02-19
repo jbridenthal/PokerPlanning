@@ -5,7 +5,7 @@
     <MudItem xs="10">
         <MudButton Variant="Variant.Outlined" Color="Color.Secondary" EndIcon="@Icons.Filled.AddCircle" FullWidth="true" OnClick="@(() => CreateRoom())"><MudText> Create Room</MudText></MudButton>
     </MudItem>
-    @foreach (var room in Rooms.Keys)
+     @foreach (var room in Rooms.Keys.Where(k=>k != LOBBY))
     {
         <MudItem xs="10">
             @*MudBadge has bug stopping button from being full width*@
@@ -18,6 +18,8 @@
     }
 </MudGrid>
 @code {
+    
+    const string LOBBY = "Lobby";
 
     private Dictionary<string, List<string>> Rooms { get; set; } = new Dictionary<string, List<string>>();
 
