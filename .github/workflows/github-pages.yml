@@ -5,8 +5,22 @@ on:
     branches:
       - master
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
   deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps: deployment.outputs.page_url }}
     runs-on: ubuntu-latest
 
     steps:
@@ -21,13 +35,24 @@ jobs:
     - name: Publish Blazor WebAssembly
       run: dotnet publish --configuration Release --output release
 
-    # GitHub Pages ignores folders starting with underscores by default (like _framework). 
-    # This empty file tells GitHub to bypass Jekyll processing.
     - name: Add .nojekyll file
       run: touch release/wwwroot/.nojekyll
 
-    - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4
+    # Fixes the SPA routing 404 issue on page refresh
+    - name: Create 404 page for SPA routing
+      run: cp release/wwwroot/index.html release/wwwroot/404.html
+
+    # Official GitHub Action to configure Pages
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+
+    # Official GitHub Action to package the artifacts
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
       with:
-        folder: release/wwwroot
-        branch: gh-pages # Standard branch name for GitHub Pages
+        path: 'release/wwwroot'
+
+    # Official GitHub Action to deploy the artifact
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
